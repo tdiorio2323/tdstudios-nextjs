@@ -57,7 +57,25 @@ export default function Navigation() {
 
         <ul className="nav-links">
           <li>
-            <Link 
+            <Link
+              href="/websites"
+              onMouseEnter={() => handleHover(true)}
+              onMouseLeave={() => handleHover(false)}
+            >
+              Websites
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/cannabis"
+              onMouseEnter={() => handleHover(true)}
+              onMouseLeave={() => handleHover(false)}
+            >
+              Cannabis
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/work"
               onMouseEnter={() => handleHover(true)}
               onMouseLeave={() => handleHover(false)}
@@ -66,7 +84,7 @@ export default function Navigation() {
             </Link>
           </li>
           <li>
-            <Link 
+            <Link
               href="/about"
               onMouseEnter={() => handleHover(true)}
               onMouseLeave={() => handleHover(false)}
@@ -75,7 +93,7 @@ export default function Navigation() {
             </Link>
           </li>
           <li>
-            <Link 
+            <Link
               href="/contact"
               onMouseEnter={() => handleHover(true)}
               onMouseLeave={() => handleHover(false)}
@@ -110,32 +128,48 @@ export default function Navigation() {
 
       {/* Mobile Menu */}
       <div className={`mobile-menu ${mobileMenuOpen ? 'active' : ''}`}>
-        <Link 
-          href="/" 
+        <Link
+          href="/"
           onClick={closeMobileMenu}
           onMouseEnter={() => handleHover(true)}
           onMouseLeave={() => handleHover(false)}
         >
           Home
         </Link>
-        <Link 
-          href="/work" 
+        <Link
+          href="/websites"
+          onClick={closeMobileMenu}
+          onMouseEnter={() => handleHover(true)}
+          onMouseLeave={() => handleHover(false)}
+        >
+          Websites
+        </Link>
+        <Link
+          href="/cannabis"
+          onClick={closeMobileMenu}
+          onMouseEnter={() => handleHover(true)}
+          onMouseLeave={() => handleHover(false)}
+        >
+          Cannabis
+        </Link>
+        <Link
+          href="/work"
           onClick={closeMobileMenu}
           onMouseEnter={() => handleHover(true)}
           onMouseLeave={() => handleHover(false)}
         >
           Work
         </Link>
-        <Link 
-          href="/about" 
+        <Link
+          href="/about"
           onClick={closeMobileMenu}
           onMouseEnter={() => handleHover(true)}
           onMouseLeave={() => handleHover(false)}
         >
           About
         </Link>
-        <Link 
-          href="/contact" 
+        <Link
+          href="/contact"
           onClick={closeMobileMenu}
           onMouseEnter={() => handleHover(true)}
           onMouseLeave={() => handleHover(false)}
