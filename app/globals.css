@@ -20,6 +20,18 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 body {
   font-family: 'Syne', sans-serif;
   background: var(--black);
@@ -1379,4 +1391,63 @@ footer {
     min-height: 40vh;
     padding: 8rem 2rem 3rem;
   }
+}
+
+/* Case Study Pages */
+.case-study-hero {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10rem 4rem 4rem;
+  position: relative;
+}
+
+.case-study-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+}
+
+.back-link:hover {
+  color: var(--white) !important;
+}
+
+.case-study-section {
+  padding: 4rem;
+  margin-bottom: 4rem;
+}
+
+.case-study-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.case-study-text {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: var(--cream);
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .case-study-hero {
+    padding: 8rem 2rem 3rem;
+  }
+
+  .case-study-section {
+    padding: 2rem;
+  }
+}
+
+/* Form Error States */
+.form-input-error,
+.form-textarea-error {
+  border-color: #ff6b6b !important;
+}
+
+.form-input-error:focus,
+.form-textarea-error:focus {
+  border-color: #ff6b6b !important;
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1) !important;
 }

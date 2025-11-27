@@ -16,18 +16,63 @@ export default function Contact() {
     budget: '',
     message: ''
   })
+  const [errors, setErrors] = useState({})
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [submitError, setSubmitError] = useState('')
 
   const handleChange = (e) => {
+    const { name, value } = e.target
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
     })
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: ''
+      })
+    }
+  }
+
+  const validateForm = () => {
+    const newErrors = {}
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required'
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address'
+    }
+
+    if (!formData.service) {
+      newErrors.service = 'Please select a service'
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = 'Please tell us about your project'
+    } else if (formData.message.trim().length < 20) {
+      newErrors.message = 'Please provide more details (at least 20 characters)'
+    }
+
+    return newErrors
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setSubmitError('')
+
+    // Validate form
+    const newErrors = validateForm()
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -36,14 +81,14 @@ export default function Contact() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       })
-      
+
       if (response.ok) {
         setSubmitted(true)
       } else {
-        console.error('Form submission failed')
+        setSubmitError('Something went wrong. Please try again or email us directly at hello@tdstudiosny.com')
       }
     } catch (error) {
-      console.error('Form submission error:', error)
+      setSubmitError('Unable to send message. Please check your connection and try again.')
     } finally {
       setLoading(false)
     }
@@ -97,32 +142,53 @@ export default function Contact() {
             </div>
           ) : (
             <form className="contact-form" onSubmit={handleSubmit}>
+              {submitError && (
+                <div style={{
+                  padding: '1rem',
+                  background: 'rgba(220, 53, 69, 0.1)',
+                  border: '1px solid rgba(220, 53, 69, 0.3)',
+                  borderRadius: '8px',
+                  color: '#ff6b6b',
+                  marginBottom: '2rem'
+                }}>
+                  {submitError}
+                </div>
+              )}
+
               <div className="form-row">
                 <div className="form-group">
                   <label className="form-label" htmlFor="name">Name *</label>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     id="name"
                     name="name"
-                    className="form-input" 
+                    className={`form-input ${errors.name ? 'form-input-error' : ''}`}
                     placeholder="Your name"
                     value={formData.name}
                     onChange={handleChange}
-                    required
                   />
+                  {errors.name && (
+                    <span style={{ color: '#ff6b6b', fontSize: '0.85rem', marginTop: '0.5rem', display: 'block' }}>
+                      {errors.name}
+                    </span>
+                  )}
                 </div>
                 <div className="form-group">
                   <label className="form-label" htmlFor="email">Email *</label>
-                  <input 
-                    type="email" 
+                  <input
+                    type="email"
                     id="email"
                     name="email"
-                    className="form-input" 
+                    className={`form-input ${errors.email ? 'form-input-error' : ''}`}
                     placeholder="your@email.com"
                     value={formData.email}
                     onChange={handleChange}
-                    required
                   />
+                  {errors.email && (
+                    <span style={{ color: '#ff6b6b', fontSize: '0.85rem', marginTop: '0.5rem', display: 'block' }}>
+                      {errors.email}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -141,13 +207,12 @@ export default function Contact() {
                 </div>
                 <div className="form-group">
                   <label className="form-label" htmlFor="service">Service *</label>
-                  <select 
+                  <select
                     id="service"
                     name="service"
-                    className="form-select"
+                    className={`form-select ${errors.service ? 'form-input-error' : ''}`}
                     value={formData.service}
                     onChange={handleChange}
-                    required
                   >
                     <option value="">Select a service</option>
                     <option value="web-design">Web Design</option>
@@ -157,6 +222,11 @@ export default function Contact() {
                     <option value="graphic-design">Graphic Design</option>
                     <option value="other">Other</option>
                   </select>
+                  {errors.service && (
+                    <span style={{ color: '#ff6b6b', fontSize: '0.85rem', marginTop: '0.5rem', display: 'block' }}>
+                      {errors.service}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -180,15 +250,19 @@ export default function Contact() {
 
               <div className="form-group">
                 <label className="form-label" htmlFor="message">Project Details *</label>
-                <textarea 
+                <textarea
                   id="message"
                   name="message"
-                  className="form-textarea" 
+                  className={`form-textarea ${errors.message ? 'form-input-error' : ''}`}
                   placeholder="Tell us about your project, goals, and timeline..."
                   value={formData.message}
                   onChange={handleChange}
-                  required
                 ></textarea>
+                {errors.message && (
+                  <span style={{ color: '#ff6b6b', fontSize: '0.85rem', marginTop: '0.5rem', display: 'block' }}>
+                    {errors.message}
+                  </span>
+                )}
               </div>
 
               <button type="submit" className="form-submit" disabled={loading}>

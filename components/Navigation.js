@@ -36,16 +36,17 @@ export default function Navigation() {
   return (
     <>
       {/* Custom Cursor */}
-      <div 
+      <div
         className={`cursor ${cursorHover ? 'hover' : ''}`}
         style={{ left: cursorPos.x, top: cursorPos.y }}
+        aria-hidden="true"
       />
 
       {/* Grain Overlay */}
-      <div className="grain" />
+      <div className="grain" aria-hidden="true" />
 
       {/* Navigation */}
-      <nav>
+      <nav role="navigation" aria-label="Main navigation">
         <Link 
           href="/" 
           className="logo"
@@ -113,21 +114,29 @@ export default function Navigation() {
         </Link>
 
         {/* Mobile Menu Button */}
-        <button 
+        <button
           className={`mobile-menu-btn ${mobileMenuOpen ? 'active' : ''}`}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           onMouseEnter={() => handleHover(true)}
           onMouseLeave={() => handleHover(false)}
-          aria-label="Toggle menu"
+          aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-menu"
         >
-          <span></span>
-          <span></span>
-          <span></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
         </button>
       </nav>
 
       {/* Mobile Menu */}
-      <div className={`mobile-menu ${mobileMenuOpen ? 'active' : ''}`}>
+      <div
+        id="mobile-menu"
+        className={`mobile-menu ${mobileMenuOpen ? 'active' : ''}`}
+        role="dialog"
+        aria-modal={mobileMenuOpen}
+        aria-hidden={!mobileMenuOpen}
+      >
         <Link
           href="/"
           onClick={closeMobileMenu}

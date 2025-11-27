@@ -8,6 +8,7 @@ import Link from 'next/link'
 const projects = [
   {
     id: 1,
+    slug: 'apex-ventures',
     title: 'Apex Ventures',
     category: 'Web Design / Branding',
     type: 'design',
@@ -16,6 +17,7 @@ const projects = [
   },
   {
     id: 2,
+    slug: 'emerald-valley',
     title: 'Emerald Valley',
     category: 'Cannabis / Packaging',
     type: 'cannabis',
@@ -24,6 +26,7 @@ const projects = [
   },
   {
     id: 3,
+    slug: 'modernist-studio',
     title: 'Modernist Studio',
     category: 'Brand Identity',
     type: 'design',
@@ -32,6 +35,7 @@ const projects = [
   },
   {
     id: 4,
+    slug: 'high-tide-collective',
     title: 'High Tide Collective',
     category: 'Cannabis / Web',
     type: 'cannabis',
@@ -40,6 +44,7 @@ const projects = [
   },
   {
     id: 5,
+    slug: 'northwind-tech',
     title: 'Northwind Tech',
     category: 'Web Design',
     type: 'design',
@@ -48,6 +53,7 @@ const projects = [
   },
   {
     id: 6,
+    slug: 'terra-bloom',
     title: 'Terra Bloom',
     category: 'Cannabis / Branding',
     type: 'cannabis',
@@ -56,6 +62,7 @@ const projects = [
   },
   {
     id: 7,
+    slug: 'cascade-financial',
     title: 'Cascade Financial',
     category: 'Brand Identity',
     type: 'design',
@@ -64,6 +71,7 @@ const projects = [
   },
   {
     id: 8,
+    slug: 'green-state-labs',
     title: 'Green State Labs',
     category: 'Cannabis / Packaging',
     type: 'cannabis',
@@ -143,13 +151,17 @@ export default function Work() {
         {/* Projects Grid */}
         <div className="work-grid">
           {filteredProjects.map((project, index) => (
-            <div key={project.id} className="work-item" style={{ cursor: 'pointer' }}>
+            <Link
+              key={project.id}
+              href={`/work/${project.slug}`}
+              className="work-item"
+            >
               <div className="work-image">
                 <div className="work-image-inner">{String(index + 1).padStart(2, '0')}</div>
               </div>
               <div className="work-info">
                 <div>
-                  <div 
+                  <div
                     className="work-category"
                     style={{ color: project.type === 'cannabis' ? 'var(--sage)' : 'var(--gold)' }}
                   >
@@ -159,7 +171,7 @@ export default function Work() {
                 </div>
                 <span className="work-year">{project.year}</span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
