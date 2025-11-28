@@ -144,6 +144,24 @@ export default function ComingSoon() {
           right: 0;
           bottom: 0;
           overflow: hidden;
+          background-image: url('/images/nyc-skyline-bg.jpg');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+
+        .coming-soon-bg::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(
+            180deg,
+            rgba(11, 11, 11, 0.6) 0%,
+            rgba(11, 11, 11, 0.8) 100%
+          );
         }
 
         .gradient-orb {
