@@ -45,17 +45,6 @@ export default function ComingSoon() {
         {/* Links */}
         <div className="coming-soon-links">
           <a
-            href="mailto:Tyler@tdstudiosny.com"
-            className="coming-soon-link"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-              <polyline points="22,6 12,13 2,6"/>
-            </svg>
-            Email Us
-          </a>
-
-          <a
             href="https://instagram.com/tdstudiosny.com"
             target="_blank"
             rel="noopener noreferrer"
@@ -70,31 +59,35 @@ export default function ComingSoon() {
           </a>
 
           <a
-            href="https://linkedin.com/company/tdstudiosny"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="mailto:Tyler@tdstudiosny.com"
             className="coming-soon-link"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-              <rect x="2" y="9" width="4" height="12"/>
-              <circle cx="4" cy="4" r="2"/>
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
             </svg>
-            LinkedIn
+            Email
           </a>
 
-          <a
-            href="https://dribbble.com/tdstudiosny"
-            target="_blank"
-            rel="noopener noreferrer"
+          <div className="coming-soon-link coming-soon-link-disabled">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            Cannabis
+          </div>
+
+          <Link
+            href="/gallery"
             className="coming-soon-link"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/>
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
             </svg>
-            Dribbble
-          </a>
+            Gallery
+          </Link>
         </div>
 
         {/* Email Signup */}
@@ -270,6 +263,17 @@ export default function ComingSoon() {
           background: rgba(255, 255, 255, 0.1);
           border-color: rgba(201, 162, 39, 0.5);
           transform: translateY(-2px);
+        }
+
+        .coming-soon-link-disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        .coming-soon-link-disabled:hover {
+          background: rgba(255, 255, 255, 0.05);
+          border-color: rgba(255, 255, 255, 0.1);
+          transform: none;
         }
 
         .coming-soon-notify {
