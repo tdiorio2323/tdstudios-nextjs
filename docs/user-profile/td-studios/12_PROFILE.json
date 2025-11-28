@@ -1,0 +1,155 @@
+{
+    "version": "1.0.1",
+    "visibility": "Private",
+    "identity": {
+        "preferred_name": "Tyler",
+        "brands": [
+            "TD STUDIOS"
+        ],
+        "role_summary": "Builds and operates systems fast, focusing on design, automation, AI, and platform building.",
+        "visibility": "Private"
+    },
+    "roles": {
+        "architect_operator": {
+            "description": "Acts as architect and operator of multiple digital platforms and brands, not as public persona.",
+            "visibility": "Private"
+        },
+        "creative_director": {
+            "description": "Provides brand-level direction for web, packaging, and visual systems.",
+            "visibility": "Private"
+        },
+        "workflow_designer": {
+            "description": "Designs AI- and automation-driven workflows, dashboards, and command hubs.",
+            "visibility": "Private"
+        },
+        "educational_systems_builder": {
+            "description": "Creates methods, promptbooks, and handbooks for internal and external reuse.",
+            "visibility": "Private"
+        }
+    },
+    "domains": [
+        {
+            "name": "td_studios_agency",
+            "description": "Luxury web, branding, and strategy studio for websites, branding, and social/funnel work.",
+            "status": "core_repeated",
+            "visibility": "Private"
+        },
+        {
+            "name": "creator_adult_platforms",
+            "description": "OnlyFans-style platforms and management systems for creators and talent.",
+            "status": "core_repeated",
+            "visibility": "Private"
+        },
+        {
+            "name": "cannabis_branding_packaging",
+            "description": "Candy/cereal-inspired and high-end cannabis branding and packaging concepts.",
+            "status": "core_repeated",
+            "visibility": "Private"
+        },
+        {
+            "name": "command_hubs_dashboards",
+            "description": "Internal command centers and dashboards for operations, keys, projects, and agents.",
+            "status": "core_repeated",
+            "visibility": "Private"
+        },
+        {
+            "name": "educational_prompt_products",
+            "description": "Systems like the C.L.O.S.E. Method and promptbooks/handbooks for AI usage.",
+            "status": "core_repeated",
+            "visibility": "Private"
+        }
+    ],
+    "skills_tooling": {
+        "web_dev": {
+            "summary": "History indicates advanced comfort with modern full-stack web work using JS frameworks, databases, and cloud deployment.",
+            "evidence_style": "architecture_docs, file_trees, deployment_flows",
+            "visibility": "Private"
+        },
+        "automation_integrations": {
+            "summary": "Designs automation flows with orchestration tools, webhooks, and bots.",
+            "visibility": "Private"
+        },
+        "ai_llm": {
+            "summary": "Heavy and sustained use of multiple AI tools for coding, analysis, and documentation.",
+            "visibility": "Private"
+        },
+        "design_media": {
+            "summary": "Directs high-fidelity packaging, branding, and motion/visual work with Adobe CC and detailed briefs.",
+            "visibility": "Private"
+        },
+        "tentative": {
+            "summary": "Tentative notes about tools and platforms with limited appearances.",
+            "notes": "Some tools and platforms appear briefly; treat them as secondary unless repeated.",
+            "visibility": "Private"
+        }
+    },
+    "preferences": {
+        "communication": {
+            "style": "Direct, execution-first, no greetings or filler.",
+            "avoid_terms": [
+                "no filler"
+            ],
+            "visibility": "Private"
+        },
+        "outputs": {
+            "preferred_formats": [
+                "markdown",
+                "repo_ready_docs",
+                "file_trees",
+                "terminal_commands"
+            ],
+            "disfavored_primary_systems": [
+                "Notion (as main system; present but not preferred)"
+            ],
+            "visibility": "Private"
+        },
+        "iteration": {
+            "style": "Frequent, targeted iterations with strong respect for prior constraints.",
+            "visibility": "Private"
+        }
+    },
+    "constraints_privacy": {
+        "behind_scenes": {
+            "description": "User prefers to remain behind-the-scenes; no personal persona in public content by default.",
+            "visibility": "Private"
+        },
+        "referrals": {
+            "description": "Referrals and partner details must remain private.",
+            "visibility": "Private"
+        },
+        "internal_systems": {
+            "description": "Internal systems, dashboards, and management tooling are private and not for public site copy unless requested.",
+            "visibility": "Private"
+        },
+        "pii_policy": {
+            "description": "No speculation or expansion of PII beyond what is explicitly given; no credentials or secrets.",
+            "visibility": "Private"
+        }
+    },
+    "output_standards": {
+        "structure": {
+            "summary": "Lead with actionable artifacts, use headings and lists, separate plan vs artifacts vs next steps when helpful.",
+            "visibility": "Private"
+        },
+        "code_cli": {
+            "summary": "Provide copy-pasteable commands with explicit placeholders and numbered steps.",
+            "visibility": "Private"
+        },
+        "acceptance": {
+            "summary": "Acceptance criteria based on account-only data, no credentials or unnecessary PII, correct visibility tags, and syntactically valid, repo-ready markdown/JSON.",
+            "visibility": "Private"
+        }
+    },
+    "prompting": {
+        "libraries_present": true,
+        "usage": "Relies on reusable prompt patterns for repo scans, architecture analysis, build scripts, agent specs, and manuals.",
+        "visibility": "Private"
+    },
+    "notes": {
+        "tentative_items": [
+            "Specific project/brand names that appear only once.",
+            "Exact scope of some experiments and prototypes."
+        ],
+        "visibility": "Private"
+    }
+}

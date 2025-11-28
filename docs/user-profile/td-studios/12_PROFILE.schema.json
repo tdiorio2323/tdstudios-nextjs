@@ -1,0 +1,323 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "TDStudiosUserProfile",
+    "type": "object",
+    "required": [
+        "version",
+        "visibility",
+        "identity",
+        "preferences"
+    ],
+    "properties": {
+        "version": {
+            "type": "string",
+            "description": "Profile version string (e.g., '1.0')."
+        },
+        "visibility": {
+            "type": "string",
+            "enum": [
+                "Public",
+                "Private"
+            ],
+            "description": "Overall visibility of the profile."
+        },
+        "identity": {
+            "type": "object",
+            "required": [
+                "preferred_name",
+                "brands",
+                "role_summary",
+                "visibility"
+            ],
+            "properties": {
+                "preferred_name": {
+                    "type": "string"
+                },
+                "brands": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "role_summary": {
+                    "type": "string"
+                },
+                "visibility": {
+                    "type": "string",
+                    "enum": [
+                        "Public",
+                        "Private"
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "roles": {
+            "type": "object",
+            "description": "Key roles the user plays.",
+            "additionalProperties": {
+                "type": "object",
+                "required": [
+                    "description",
+                    "visibility"
+                ],
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "visibility": {
+                        "type": "string",
+                        "enum": [
+                            "Public",
+                            "Private"
+                        ]
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "domains": {
+            "type": "array",
+            "description": "Core domains and project categories.",
+            "items": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "description",
+                    "status",
+                    "visibility"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "visibility": {
+                        "type": "string",
+                        "enum": [
+                            "Public",
+                            "Private"
+                        ]
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "skills_tooling": {
+            "type": "object",
+            "description": "Summary of skills and tooling based on account history.",
+            "additionalProperties": {
+                "type": "object",
+                "required": [
+                    "summary",
+                    "visibility"
+                ],
+                "properties": {
+                    "summary": {
+                        "type": "string"
+                    },
+                    "evidence_style": {
+                        "type": "string"
+                    },
+                    "visibility": {
+                        "type": "string",
+                        "enum": [
+                            "Public",
+                            "Private"
+                        ]
+                    },
+                    "notes": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "preferences": {
+            "type": "object",
+            "required": [
+                "communication",
+                "outputs"
+            ],
+            "properties": {
+                "communication": {
+                    "type": "object",
+                    "required": [
+                        "style",
+                        "visibility"
+                    ],
+                    "properties": {
+                        "style": {
+                            "type": "string"
+                        },
+                        "avoid_terms": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "visibility": {
+                            "type": "string",
+                            "enum": [
+                                "Public",
+                                "Private"
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "outputs": {
+                    "type": "object",
+                    "required": [
+                        "preferred_formats",
+                        "visibility"
+                    ],
+                    "properties": {
+                        "preferred_formats": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "disfavored_primary_systems": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "visibility": {
+                            "type": "string",
+                            "enum": [
+                                "Public",
+                                "Private"
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "iteration": {
+                    "type": "object",
+                    "required": [
+                        "style",
+                        "visibility"
+                    ],
+                    "properties": {
+                        "style": {
+                            "type": "string"
+                        },
+                        "visibility": {
+                            "type": "string",
+                            "enum": [
+                                "Public",
+                                "Private"
+                            ]
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        },
+        "constraints_privacy": {
+            "type": "object",
+            "description": "Constraints and privacy expectations.",
+            "additionalProperties": {
+                "type": "object",
+                "required": [
+                    "description",
+                    "visibility"
+                ],
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "visibility": {
+                        "type": "string",
+                        "enum": [
+                            "Public",
+                            "Private"
+                        ]
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "output_standards": {
+            "type": "object",
+            "description": "High-level output standards.",
+            "additionalProperties": {
+                "type": "object",
+                "required": [
+                    "summary",
+                    "visibility"
+                ],
+                "properties": {
+                    "summary": {
+                        "type": "string"
+                    },
+                    "visibility": {
+                        "type": "string",
+                        "enum": [
+                            "Public",
+                            "Private"
+                        ]
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "prompting": {
+            "type": "object",
+            "required": [
+                "libraries_present",
+                "usage",
+                "visibility"
+            ],
+            "properties": {
+                "libraries_present": {
+                    "type": "boolean"
+                },
+                "usage": {
+                    "type": "string"
+                },
+                "visibility": {
+                    "type": "string",
+                    "enum": [
+                        "Public",
+                        "Private"
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "notes": {
+            "type": "object",
+            "required": [
+                "tentative_items",
+                "visibility"
+            ],
+            "properties": {
+                "tentative_items": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "visibility": {
+                    "type": "string",
+                    "enum": [
+                        "Public",
+                        "Private"
+                    ]
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "additionalProperties": false
+}
