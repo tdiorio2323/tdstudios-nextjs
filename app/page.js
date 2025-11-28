@@ -191,15 +191,34 @@ export default function ComingSoon() {
         .coming-soon-card {
           position: relative;
           z-index: 2;
-          background: rgba(24, 24, 27, 0.6);
-          backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.03);
+          backdrop-filter: blur(40px) saturate(180%);
+          -webkit-backdrop-filter: blur(40px) saturate(180%);
+          border: 1px solid rgba(255, 255, 255, 0.18);
           border-radius: 24px;
           padding: 4rem 3rem;
           max-width: 600px;
           width: 100%;
           text-align: center;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+          box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .coming-soon-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: linear-gradient(90deg, 
+            transparent, 
+            rgba(255, 255, 255, 0.4) 20%, 
+            rgba(255, 255, 255, 0.4) 80%, 
+            transparent);
+          border-radius: 24px 24px 0 0;
         }
 
         .coming-soon-logo {
