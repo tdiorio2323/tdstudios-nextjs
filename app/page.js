@@ -266,14 +266,8 @@ export default function ComingSoon() {
         }
 
         .coming-soon-link-disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-
-        .coming-soon-link-disabled:hover {
-          background: rgba(255, 255, 255, 0.05);
-          border-color: rgba(255, 255, 255, 0.1);
-          transform: none;
+          cursor: default;
+          pointer-events: none;
         }
 
         .coming-soon-notify {
