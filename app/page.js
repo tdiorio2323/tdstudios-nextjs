@@ -56,7 +56,7 @@ export default function ComingSoon() {
           </a>
 
           <a
-            href="https://instagram.com/tdstudiosny"
+            href="https://instagram.com/tdstudiosny.com"
             target="_blank"
             rel="noopener noreferrer"
             className="coming-soon-link"

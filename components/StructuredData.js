@@ -27,7 +27,7 @@ export const organizationSchema = {
     contactType: 'Customer Service'
   },
   sameAs: [
-    'https://instagram.com/tdstudiosny',
+    'https://instagram.com/tdstudiosny.com',
     'https://linkedin.com/company/tdstudiosny',
     'https://dribbble.com/tdstudiosny'
   ],
@@ -80,7 +80,7 @@ export const localBusinessSchema = {
     closes: '18:00'
   },
   sameAs: [
-    'https://instagram.com/tdstudiosny',
+    'https://instagram.com/tdstudiosny.com',
     'https://linkedin.com/company/tdstudiosny',
     'https://dribbble.com/tdstudiosny'
   ]

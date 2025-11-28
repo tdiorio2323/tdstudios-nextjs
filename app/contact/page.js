@@ -129,7 +129,7 @@ export default function Contact() {
               
               <div className="contact-detail">
                 <div className="contact-detail-label">Follow Along</div>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">@tdstudiosny</a>
+                <a href="https://instagram.com/tdstudiosny.com" target="_blank" rel="noopener noreferrer">@tdstudiosny.com</a>
               </div>
             </div>
           </div>
