@@ -77,7 +77,7 @@ export default function ComingSoon() {
             Cannabis
           </div>
 
-          <Link
+          <a
             href="/gallery"
             className="coming-soon-link"
           >
@@ -87,7 +87,7 @@ export default function ComingSoon() {
               <polyline points="21 15 16 10 5 21"/>
             </svg>
             Gallery
-          </Link>
+          </a>
         </div>
 
         {/* Email Signup */}
