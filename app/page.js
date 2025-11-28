@@ -134,7 +134,7 @@ export default function ComingSoon() {
           padding: 2rem;
           position: relative;
           overflow: hidden;
-          background: #0a0a0a;
+          background: var(--black);
         }
 
         .coming-soon-bg {
@@ -157,7 +157,7 @@ export default function ComingSoon() {
         .gradient-orb-1 {
           width: 500px;
           height: 500px;
-          background: radial-gradient(circle, #c9a227 0%, transparent 70%);
+          background: radial-gradient(circle, var(--gold) 0%, transparent 70%);
           top: -200px;
           left: -200px;
           animation-delay: 0s;
@@ -166,7 +166,7 @@ export default function ComingSoon() {
         .gradient-orb-2 {
           width: 400px;
           height: 400px;
-          background: radial-gradient(circle, #8b9a7d 0%, transparent 70%);
+          background: radial-gradient(circle, var(--sage) 0%, transparent 70%);
           bottom: -150px;
           right: -150px;
           animation-delay: 7s;
@@ -175,7 +175,7 @@ export default function ComingSoon() {
         .gradient-orb-3 {
           width: 350px;
           height: 350px;
-          background: radial-gradient(circle, #c9a227 0%, transparent 70%);
+          background: radial-gradient(circle, var(--gold) 0%, transparent 70%);
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
@@ -191,7 +191,7 @@ export default function ComingSoon() {
         .coming-soon-card {
           position: relative;
           z-index: 2;
-          background: rgba(26, 26, 26, 0.6);
+          background: rgba(24, 24, 27, 0.6);
           backdrop-filter: blur(20px);
           border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: 24px;
@@ -206,7 +206,7 @@ export default function ComingSoon() {
           font-size: 1.5rem;
           font-weight: 800;
           letter-spacing: 0.15em;
-          color: #f5f5f0;
+          color: var(--white);
           margin-bottom: 2rem;
           text-transform: uppercase;
         }
@@ -216,22 +216,22 @@ export default function ComingSoon() {
           font-size: clamp(2rem, 5vw, 3.5rem);
           font-weight: 400;
           line-height: 1.2;
-          color: #f5f5f0;
+          color: var(--white);
           margin-bottom: 1.5rem;
         }
 
         .text-gold {
-          color: #c9a227;
+          color: var(--gold);
           font-style: italic;
         }
 
         .text-sage {
-          color: #8b9a7d;
+          color: var(--sage);
           font-style: italic;
         }
 
         .coming-soon-subtitle {
-          color: #bbb;
+          color: var(--light-gray);
           font-size: 1.125rem;
           line-height: 1.6;
           margin-bottom: 3rem;
@@ -253,7 +253,7 @@ export default function ComingSoon() {
           background: rgba(255, 255, 255, 0.05);
           border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: 12px;
-          color: #f5f5f0;
+          color: var(--white);
           text-decoration: none;
           font-weight: 500;
           transition: all 0.3s ease;
@@ -261,7 +261,7 @@ export default function ComingSoon() {
 
         .coming-soon-link:hover {
           background: rgba(255, 255, 255, 0.1);
-          border-color: rgba(201, 162, 39, 0.5);
+          border-color: var(--gold);
           transform: translateY(-2px);
         }
 
@@ -285,27 +285,27 @@ export default function ComingSoon() {
           background: rgba(255, 255, 255, 0.05);
           border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: 12px;
-          color: #f5f5f0;
+          color: var(--white);
           font-size: 1rem;
           outline: none;
           transition: all 0.3s ease;
         }
 
         .notify-input::placeholder {
-          color: #888;
+          color: var(--gray);
         }
 
         .notify-input:focus {
           background: rgba(255, 255, 255, 0.08);
-          border-color: rgba(201, 162, 39, 0.5);
+          border-color: var(--gold);
         }
 
         .notify-button {
           padding: 1rem 2rem;
-          background: linear-gradient(135deg, #c9a227 0%, #a88620 100%);
+          background: var(--gold);
           border: none;
           border-radius: 12px;
-          color: #0a0a0a;
+          color: var(--black);
           font-weight: 600;
           font-size: 1rem;
           cursor: pointer;
@@ -315,21 +315,21 @@ export default function ComingSoon() {
 
         .notify-button:hover {
           transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(201, 162, 39, 0.3);
+          box-shadow: 0 4px 12px rgba(244, 114, 182, 0.3);
         }
 
         .notify-success {
           padding: 1rem 1.5rem;
-          background: rgba(139, 154, 125, 0.1);
-          border: 1px solid rgba(139, 154, 125, 0.3);
+          background: rgba(167, 139, 250, 0.1);
+          border: 1px solid rgba(167, 139, 250, 0.3);
           border-radius: 12px;
-          color: #8b9a7d;
+          color: var(--sage);
           font-weight: 500;
         }
 
         .preview-link {
           display: inline-block;
-          color: #888;
+          color: var(--gray);
           font-size: 0.875rem;
           text-decoration: none;
           transition: color 0.3s ease;
@@ -337,15 +337,15 @@ export default function ComingSoon() {
         }
 
         .preview-link:hover {
-          color: #c9a227;
-          border-bottom-color: #c9a227;
+          color: var(--gold);
+          border-bottom-color: var(--gold);
         }
 
         .coming-soon-footer {
           position: relative;
           z-index: 2;
           margin-top: 3rem;
-          color: #666;
+          color: var(--gray);
           font-size: 0.875rem;
         }
 
