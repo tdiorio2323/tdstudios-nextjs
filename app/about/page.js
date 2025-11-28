@@ -1,6 +1,8 @@
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
+import Image from 'next/image'
+import { aboutVisual } from '@/lib/visuals'
 
 export const metadata = {
   title: 'About',
@@ -24,10 +26,15 @@ export default function About() {
             We&apos;ve built a unique position in the market: a full-service creative studio with genuine expertise in the cannabis industry. We know the regulations inside and out, we understand compliance requirements, and we know exactly what it takes to build a brand that dominates in a crowded market.
           </p>
         </div>
-        <div className="about-hero-visual">
-          <div className="approach-shape"></div>
-          <div className="approach-shape"></div>
-          <div className="approach-shape"></div>
+        <div className="about-hero-visual relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-zinc-950 via-black to-zinc-900">
+          <Image
+            src={aboutVisual.src}
+            alt={aboutVisual.alt}
+            fill
+            className="object-cover opacity-60"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
         </div>
       </section>
 

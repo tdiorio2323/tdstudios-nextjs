@@ -1,6 +1,8 @@
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
+import Image from 'next/image'
+import { cannabisShots } from '@/lib/visuals'
 
 export const metadata = {
   title: 'Cannabis Branding & Packaging',
@@ -92,9 +94,28 @@ export default function Cannabis() {
             </div>
           </div>
           <div className="approach-visual">
-            <div className="approach-shape"></div>
-            <div className="approach-shape"></div>
-            <div className="approach-shape"></div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', height: '100%' }}>
+              {cannabisShots.slice(0, 4).map((shot, index) => (
+                <div
+                  key={shot.src}
+                  style={{
+                    position: 'relative',
+                    overflow: 'hidden',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(167, 139, 250, 0.2)',
+                    height: index < 2 ? '240px' : '220px'
+                  }}
+                >
+                  <Image
+                    src={shot.src}
+                    alt={shot.alt}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 300px"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

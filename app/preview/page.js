@@ -1,6 +1,8 @@
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
+import Image from 'next/image'
+import { heroVisual, portfolioProjects, serviceIcons } from '@/lib/visuals'
 
 export default function Home() {
   return (
@@ -9,7 +11,16 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="hero">
-        <div className="hero-bg"></div>
+        <div className="hero-bg">
+          <Image
+            src={heroVisual.src}
+            alt={heroVisual.alt}
+            fill
+            className="object-cover opacity-30"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black" />
+        </div>
         <div className="hero-content">
           <div className="hero-label">Web Design & Branding Studio — New York</div>
           <h1 className="hero-title">
@@ -81,25 +92,61 @@ export default function Home() {
 
         <div className="services-grid">
           <div className="service-card">
-            <div className="service-number">01</div>
+            <div className="flex justify-between items-start mb-8">
+              <div className="service-number">01</div>
+              <Image
+                src={serviceIcons["website-design"] ?? "/placeholders/icon-fallback.svg"}
+                alt="Web Design"
+                width={32}
+                height={32}
+                className="h-8 w-8 opacity-80"
+              />
+            </div>
             <h3 className="service-title">Web Design</h3>
             <p className="service-desc">Custom websites engineered for performance and conversion. From marketing sites to e-commerce platforms, designed to engage your audience and built to scale with your business.</p>
           </div>
 
           <div className="service-card">
-            <div className="service-number">02</div>
+            <div className="flex justify-between items-start mb-8">
+              <div className="service-number">02</div>
+              <Image
+                src={serviceIcons["brand-identity"] ?? "/placeholders/icon-fallback.svg"}
+                alt="Brand Identity"
+                width={32}
+                height={32}
+                className="h-8 w-8 opacity-80"
+              />
+            </div>
             <h3 className="service-title">Brand Identity</h3>
             <p className="service-desc">Complete visual systems from logo to brand guidelines. We build strategic brand foundations that differentiate you from competitors and forge real connections with your audience.</p>
           </div>
 
           <div className="service-card">
-            <div className="service-number">03</div>
+            <div className="flex justify-between items-start mb-8">
+              <div className="service-number">03</div>
+              <Image
+                src={serviceIcons["packaging-design"] ?? "/placeholders/icon-fallback.svg"}
+                alt="Packaging Design"
+                width={32}
+                height={32}
+                className="h-8 w-8 opacity-80"
+              />
+            </div>
             <h3 className="service-title">Packaging Design</h3>
             <p className="service-desc">Product packaging that sells itself on the shelf. We specialize in compliant cannabis packaging that builds instant recognition and earns consumer trust.</p>
           </div>
 
           <div className="service-card">
-            <div className="service-number">04</div>
+            <div className="flex justify-between items-start mb-8">
+              <div className="service-number">04</div>
+              <Image
+                src={serviceIcons["graphic-design"] ?? "/placeholders/icon-fallback.svg"}
+                alt="Graphic Design"
+                width={32}
+                height={32}
+                className="h-8 w-8 opacity-80"
+              />
+            </div>
             <h3 className="service-title">Graphic Design</h3>
             <p className="service-desc">Marketing collateral, print materials, and visual assets that extend your brand consistently across every customer touchpoint.</p>
           </div>
@@ -122,57 +169,37 @@ export default function Home() {
         </div>
 
         <div className="work-grid">
-          <Link href="/work" className="work-item">
-            <div className="work-image">
-              <div className="work-image-inner">01</div>
-            </div>
-            <div className="work-info">
-              <div>
-                <div className="work-category">Web Design / Branding</div>
-                <h3 className="work-title">Apex Ventures</h3>
+          {portfolioProjects.slice(0, 4).map((project, index) => (
+            <Link
+              key={project.slug}
+              href={`/work/${project.slug}`}
+              className="work-item"
+            >
+              <div className="work-image">
+                <Image
+                  src={project.image}
+                  alt={project.name}
+                  width={1200}
+                  height={750}
+                  className="w-full h-full object-cover"
+                  priority={index < 2}
+                />
+                <div className="work-image-inner">{String(index + 1).padStart(2, '0')}</div>
               </div>
-              <span className="work-year">2024</span>
-            </div>
-          </Link>
-
-          <Link href="/work" className="work-item">
-            <div className="work-image">
-              <div className="work-image-inner">02</div>
-            </div>
-            <div className="work-info">
-              <div>
-                <div className="work-category">Cannabis / Packaging</div>
-                <h3 className="work-title">Emerald Valley</h3>
+              <div className="work-info">
+                <div>
+                  <div
+                    className="work-category"
+                    style={{ color: project.type === 'cannabis' ? 'var(--sage)' : 'var(--gold)' }}
+                  >
+                    {project.category}
+                  </div>
+                  <h3 className="work-title">{project.name}</h3>
+                </div>
+                <span className="work-year">{project.year}</span>
               </div>
-              <span className="work-year">2024</span>
-            </div>
-          </Link>
-
-          <Link href="/work" className="work-item">
-            <div className="work-image">
-              <div className="work-image-inner">03</div>
-            </div>
-            <div className="work-info">
-              <div>
-                <div className="work-category">Brand Identity</div>
-                <h3 className="work-title">Modernist Studio</h3>
-              </div>
-              <span className="work-year">2024</span>
-            </div>
-          </Link>
-
-          <Link href="/work" className="work-item">
-            <div className="work-image">
-              <div className="work-image-inner">04</div>
-            </div>
-            <div className="work-info">
-              <div>
-                <div className="work-category">Cannabis / Web</div>
-                <h3 className="work-title">High Tide Collective</h3>
-              </div>
-              <span className="work-year">2023</span>
-            </div>
-          </Link>
+            </Link>
+          ))}
         </div>
       </section>
 

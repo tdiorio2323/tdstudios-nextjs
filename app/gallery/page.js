@@ -1,29 +1,15 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { galleryImages } from '@/lib/visuals'
 
 export default function Gallery() {
-  const [images, setImages] = useState([])
-  const [loading, setLoading] = useState(true)
   const [selectedImage, setSelectedImage] = useState(null)
 
-  useEffect(() => {
-    fetchGallery()
-  }, [])
-
-  const fetchGallery = async () => {
-    try {
-      const response = await fetch('/api/gallery')
-      const data = await response.json()
-      setImages(data.images)
-    } catch (error) {
-      console.error('Error fetching gallery:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  // Use static gallery images from config
+  const images = galleryImages
 
   const openLightbox = (image) => {
     setSelectedImage(image)
@@ -55,41 +41,24 @@ export default function Gallery() {
 
       {/* Content */}
       <div className="gallery-content">
-        {loading ? (
-          <div className="gallery-loading">
-            <div className="loading-spinner"></div>
-            <p>Loading gallery...</p>
-          </div>
-        ) : images.length === 0 ? (
-          <div className="gallery-empty">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-              <circle cx="8.5" cy="8.5" r="1.5"/>
-              <polyline points="21 15 16 10 5 21"/>
-            </svg>
-            <h2>No images yet</h2>
-            <p>Drop images into the /public/gallery folder to see them here.</p>
-            <p style={{ fontSize: '0.875rem', color: 'var(--gray)', marginTop: '1rem' }}>
-              Supported formats: JPG, PNG, GIF, WebP, AVIF
-            </p>
-          </div>
-        ) : (
-          <div className="gallery-grid">
-            {images.map((image, index) => (
-              <div
-                key={image.name}
-                className="gallery-item"
-                onClick={() => openLightbox(image)}
-              >
-                <img
-                  src={image.url}
-                  alt={image.name}
-                  loading="lazy"
-                />
-              </div>
-            ))}
-          </div>
-        )}
+        <div className="gallery-grid">
+          {images.map((image, index) => (
+            <div
+              key={image.src}
+              className="gallery-item"
+              onClick={() => openLightbox(image)}
+            >
+              <Image
+                src={image.src}
+                alt={image.alt}
+                width={600}
+                height={750}
+                className="w-full h-full object-cover"
+                loading={index < 6 ? "eager" : "lazy"}
+              />
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Lightbox */}
@@ -102,9 +71,12 @@ export default function Gallery() {
                 <line x1="6" y1="6" x2="18" y2="18"/>
               </svg>
             </button>
-            <img
-              src={selectedImage.url}
-              alt={selectedImage.name}
+            <Image
+              src={selectedImage.src}
+              alt={selectedImage.alt}
+              width={1920}
+              height={1200}
+              className="max-w-full max-h-[90vh] object-contain rounded-lg"
             />
           </div>
         </div>
