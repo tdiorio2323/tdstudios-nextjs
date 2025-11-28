@@ -125,6 +125,14 @@ export default function ComingSoon() {
       </div>
 
       <style jsx>{`
+        @font-face {
+          font-family: 'Benzin';
+          src: url('/fonts/Benzin-Bold.ttf') format('truetype');
+          font-weight: 700;
+          font-style: normal;
+          font-display: swap;
+        }
+
         .coming-soon-container {
           min-height: 100vh;
           display: flex;
@@ -240,6 +248,7 @@ export default function ComingSoon() {
         }
 
         .coming-soon-logo {
+          font-family: 'Benzin', sans-serif;
           font-size: 1.5rem;
           font-weight: 800;
           letter-spacing: 0.15em;
