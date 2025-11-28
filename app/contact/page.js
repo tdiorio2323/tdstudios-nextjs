@@ -85,7 +85,7 @@ export default function Contact() {
       if (response.ok) {
         setSubmitted(true)
       } else {
-        setSubmitError('Something went wrong. Please try again or email us directly at hello@tdstudiosny.com')
+        setSubmitError('Something went wrong. Please try again or email us directly at Tyler@tdstudiosny.com')
       }
     } catch (error) {
       setSubmitError('Unable to send message. Please check your connection and try again.')
@@ -119,7 +119,7 @@ export default function Contact() {
             <div className="contact-details">
               <div className="contact-detail">
                 <div className="contact-detail-label">Email</div>
-                <a href="mailto:hello@tdstudiosny.com">hello@tdstudiosny.com</a>
+                <a href="mailto:Tyler@tdstudiosny.com">Tyler@tdstudiosny.com</a>
               </div>
               
               <div className="contact-detail">

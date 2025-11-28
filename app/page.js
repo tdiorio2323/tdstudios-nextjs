@@ -45,7 +45,7 @@ export default function ComingSoon() {
         {/* Links */}
         <div className="coming-soon-links">
           <a
-            href="mailto:hello@tdstudiosny.com"
+            href="mailto:Tyler@tdstudiosny.com"
             className="coming-soon-link"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

@@ -23,7 +23,7 @@ export const organizationSchema = {
   },
   contactPoint: {
     '@type': 'ContactPoint',
-    email: 'hello@tdstudiosny.com',
+    email: 'Tyler@tdstudiosny.com',
     contactType: 'Customer Service'
   },
   sameAs: [
