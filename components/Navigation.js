@@ -46,67 +46,39 @@ export default function Navigation() {
       <div className="grain" aria-hidden="true" />
 
       {/* Navigation */}
-      <nav role="navigation" aria-label="Main navigation">
+      <nav
+        role="navigation"
+        aria-label="Main navigation"
+        className="fixed top-0 left-0 right-0 z-[100] px-8 py-8 md:px-16 flex justify-between items-center mix-blend-difference text-white"
+      >
         <Link 
           href="/" 
-          className="logo"
+          className="text-xl font-bold tracking-[0.05em] uppercase"
           onMouseEnter={() => handleHover(true)}
           onMouseLeave={() => handleHover(false)}
         >
           TD STUDIOS
         </Link>
 
-        <ul className="nav-links">
-          <li>
-            <Link
-              href="/websites"
-              onMouseEnter={() => handleHover(true)}
-              onMouseLeave={() => handleHover(false)}
-            >
-              Websites
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/cannabis"
-              onMouseEnter={() => handleHover(true)}
-              onMouseLeave={() => handleHover(false)}
-            >
-              Cannabis
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/work"
-              onMouseEnter={() => handleHover(true)}
-              onMouseLeave={() => handleHover(false)}
-            >
-              Work
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/about"
-              onMouseEnter={() => handleHover(true)}
-              onMouseLeave={() => handleHover(false)}
-            >
-              About
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/contact"
-              onMouseEnter={() => handleHover(true)}
-              onMouseLeave={() => handleHover(false)}
-            >
-              Contact
-            </Link>
-          </li>
+        <ul className="hidden md:flex gap-12 list-none">
+          {['Websites', 'Cannabis', 'Work', 'About', 'Contact'].map((item) => (
+            <li key={item}>
+              <Link
+                href={`/${item.toLowerCase()}`}
+                className="text-sm font-medium tracking-[0.05em] uppercase relative group"
+                onMouseEnter={() => handleHover(true)}
+                onMouseLeave={() => handleHover(false)}
+              >
+                {item}
+                <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+            </li>
+          ))}
         </ul>
 
         <Link 
           href="/contact" 
-          className="nav-cta"
+          className="hidden md:block px-6 py-3 border border-white text-xs font-semibold tracking-[0.1em] uppercase transition-all duration-300 hover:bg-white hover:text-black"
           onMouseEnter={() => handleHover(true)}
           onMouseLeave={() => handleHover(false)}
         >
@@ -115,7 +87,7 @@ export default function Navigation() {
 
         {/* Mobile Menu Button */}
         <button
-          className={`mobile-menu-btn ${mobileMenuOpen ? 'active' : ''}`}
+          className={`md:hidden flex flex-col justify-center items-center w-10 h-10 z-[200] space-y-1.5 ${mobileMenuOpen ? 'active' : ''}`}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           onMouseEnter={() => handleHover(true)}
           onMouseLeave={() => handleHover(false)}
@@ -123,68 +95,32 @@ export default function Navigation() {
           aria-expanded={mobileMenuOpen}
           aria-controls="mobile-menu"
         >
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
+          <span className={`block w-6 h-px bg-white transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-[7px]' : ''}`}></span>
+          <span className={`block w-6 h-px bg-white transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`}></span>
+          <span className={`block w-6 h-px bg-white transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-[7px]' : ''}`}></span>
         </button>
       </nav>
 
       {/* Mobile Menu */}
       <div
         id="mobile-menu"
-        className={`mobile-menu ${mobileMenuOpen ? 'active' : ''}`}
+        className={`fixed inset-0 bg-black z-[150] flex flex-col justify-center items-center gap-8 transition-opacity duration-400 ${mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
         role="dialog"
         aria-modal={mobileMenuOpen}
         aria-hidden={!mobileMenuOpen}
       >
-        <Link
-          href="/"
-          onClick={closeMobileMenu}
-          onMouseEnter={() => handleHover(true)}
-          onMouseLeave={() => handleHover(false)}
-        >
-          Home
-        </Link>
-        <Link
-          href="/websites"
-          onClick={closeMobileMenu}
-          onMouseEnter={() => handleHover(true)}
-          onMouseLeave={() => handleHover(false)}
-        >
-          Websites
-        </Link>
-        <Link
-          href="/cannabis"
-          onClick={closeMobileMenu}
-          onMouseEnter={() => handleHover(true)}
-          onMouseLeave={() => handleHover(false)}
-        >
-          Cannabis
-        </Link>
-        <Link
-          href="/work"
-          onClick={closeMobileMenu}
-          onMouseEnter={() => handleHover(true)}
-          onMouseLeave={() => handleHover(false)}
-        >
-          Work
-        </Link>
-        <Link
-          href="/about"
-          onClick={closeMobileMenu}
-          onMouseEnter={() => handleHover(true)}
-          onMouseLeave={() => handleHover(false)}
-        >
-          About
-        </Link>
-        <Link
-          href="/contact"
-          onClick={closeMobileMenu}
-          onMouseEnter={() => handleHover(true)}
-          onMouseLeave={() => handleHover(false)}
-        >
-          Contact
-        </Link>
+        {['Home', 'Websites', 'Cannabis', 'Work', 'About', 'Contact'].map((item) => (
+          <Link
+            key={item}
+            href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
+            onClick={closeMobileMenu}
+            className="font-serif text-5xl text-white hover:text-purple transition-colors duration-300"
+            onMouseEnter={() => handleHover(true)}
+            onMouseLeave={() => handleHover(false)}
+          >
+            {item}
+          </Link>
+        ))}
       </div>
     </>
   )

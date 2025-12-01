@@ -17,7 +17,7 @@ export default function Loading() {
           width: 50px;
           height: 50px;
           border: 3px solid var(--charcoal);
-          border-top: 3px solid var(--gold);
+          border-top: 3px solid var(--pink);
           border-radius: 50%;
           animation: spin 1s linear infinite;
         }

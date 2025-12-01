@@ -12,9 +12,10 @@ const themes = {
             '--black': '#0a0a0a',
             '--white': '#f5f5f0',
             '--cream': '#e8e4dc',
-            '--sage': '#8b9a7d',
-            '--sage-dark': '#6b7a5d',
-            '--gold': '#c9a227',
+            '--sage': '#8b9a7d', // Keeping value but key might need change if we want consistency, but let's just change keys to match new system
+            '--purple': '#8b9a7d',
+            '--purple-dark': '#6b7a5d',
+            '--pink': '#c9a227',
             '--charcoal': '#1a1a1a',
             '--gray': '#888888',
             '--light-gray': '#bbbbbb',
@@ -26,9 +27,9 @@ const themes = {
             '--black': '#02040a',
             '--white': '#f0f4f8',
             '--cream': '#e2e8f0',
-            '--sage': '#64748b',
-            '--sage-dark': '#475569',
-            '--gold': '#38bdf8',
+            '--purple': '#64748b',
+            '--purple-dark': '#475569',
+            '--pink': '#38bdf8',
             '--charcoal': '#0f172a',
             '--gray': '#94a3b8',
             '--light-gray': '#cbd5e1',
@@ -40,9 +41,9 @@ const themes = {
             '--black': '#1a0f0a',
             '--white': '#faf5f0',
             '--cream': '#f0e6d6',
-            '--sage': '#c17c5f',
-            '--sage-dark': '#8a4f3b',
-            '--gold': '#e0b06b',
+            '--purple': '#c17c5f',
+            '--purple-dark': '#8a4f3b',
+            '--pink': '#e0b06b',
             '--charcoal': '#2e1f18',
             '--gray': '#9c8c84',
             '--light-gray': '#d6c8c0',
@@ -54,9 +55,9 @@ const themes = {
             '--black': '#0b0b0b',
             '--white': '#eeeeee',
             '--cream': '#d4d4d4',
-            '--sage': '#a78bfa',
-            '--sage-dark': '#7c3aed',
-            '--gold': '#f472b6',
+            '--purple': '#a78bfa',
+            '--purple-dark': '#7c3aed',
+            '--pink': '#f472b6',
             '--charcoal': '#18181b',
             '--gray': '#71717a',
             '--light-gray': '#a1a1aa',
@@ -107,7 +108,7 @@ export default function BrandingPage() {
                             >
                                 <span
                                     className={styles.themePreview}
-                                    style={{ background: theme.colors['--gold'] }}
+                                    style={{ background: theme.colors['--pink'] }}
                                 />
                                 {theme.name}
                             </button>
@@ -123,9 +124,9 @@ export default function BrandingPage() {
                         <ColorCard name="Charcoal" variable="--charcoal" hex={colors['--charcoal']} bg="var(--charcoal)" />
                         <ColorCard name="White" variable="--white" hex={colors['--white']} bg="var(--white)" text="black" />
                         <ColorCard name="Cream" variable="--cream" hex={colors['--cream']} bg="var(--cream)" text="black" />
-                        <ColorCard name="Sage" variable="--sage" hex={colors['--sage']} bg="var(--sage)" />
-                        <ColorCard name="Sage Dark" variable="--sage-dark" hex={colors['--sage-dark']} bg="var(--sage-dark)" />
-                        <ColorCard name="Gold" variable="--gold" hex={colors['--gold']} bg="var(--gold)" />
+                        <ColorCard name="Purple" variable="--purple" hex={colors['--purple']} bg="var(--purple)" />
+                        <ColorCard name="Purple Dark" variable="--purple-dark" hex={colors['--purple-dark']} bg="var(--purple-dark)" />
+                        <ColorCard name="Pink" variable="--pink" hex={colors['--pink']} bg="var(--pink)" />
                         <ColorCard name="Gray" variable="--gray" hex={colors['--gray']} bg="var(--gray)" />
                         <ColorCard name="Light Gray" variable="--light-gray" hex={colors['--light-gray']} bg="var(--light-gray)" text="black" />
                     </div>

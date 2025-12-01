@@ -1,7 +1,9 @@
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
+import { portfolioProjects } from '@/lib/visuals'
 
 // Project data - in production, this would come from a CMS or database
 const projects = {
@@ -227,6 +229,7 @@ export async function generateStaticParams() {
 
 export default function CaseStudy({ params }) {
   const project = projects[params.slug]
+  const visualProject = portfolioProjects.find(p => p.slug === params.slug)
 
   if (!project) {
     notFound()
@@ -294,16 +297,34 @@ export default function CaseStudy({ params }) {
         <div style={{
           width: '100%',
           aspectRatio: '16/9',
-          background: 'linear-gradient(135deg, var(--charcoal) 0%, var(--black) 100%)',
+          position: 'relative',
           borderRadius: '12px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '3rem',
-          fontWeight: '700',
-          color: 'var(--gray)'
+          overflow: 'hidden',
+          background: 'var(--charcoal)'
         }}>
-          {project.title.split(' ').map(word => word[0]).join('')}
+          {visualProject ? (
+            <Image
+              src={visualProject.image}
+              alt={project.title}
+              fill
+              className="object-cover"
+              priority
+            />
+          ) : (
+            <div style={{
+              width: '100%',
+              height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '3rem',
+                fontWeight: '700',
+                color: 'var(--gray)',
+                background: 'linear-gradient(135deg, var(--charcoal) 0%, var(--black) 100%)'
+              }}>
+                {project.title.split(' ').map(word => word[0]).join('')}
+            </div>
+          )}
         </div>
       </section>
 
@@ -355,7 +376,7 @@ export default function CaseStudy({ params }) {
                   fontSize: '2rem',
                   fontWeight: '700',
                   marginBottom: '1rem',
-                  color: project.type === 'cannabis' ? 'var(--sage)' : 'var(--gold)'
+                  color: project.type === 'cannabis' ? 'var(--purple)' : 'var(--pink)'
                 }}>
                   {index + 1 < 10 ? `0${index + 1}` : index + 1}
                 </div>

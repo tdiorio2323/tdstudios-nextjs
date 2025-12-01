@@ -54,9 +54,9 @@ export default function Work() {
             className="hero-tag"
             style={{ 
               cursor: 'pointer',
-              background: filter === 'design' ? 'var(--gold)' : 'transparent',
+              background: filter === 'design' ? 'var(--pink)' : 'transparent',
               color: filter === 'design' ? 'var(--black)' : 'var(--light-gray)',
-              borderColor: filter === 'design' ? 'var(--gold)' : 'var(--charcoal)'
+              borderColor: filter === 'design' ? 'var(--pink)' : 'var(--charcoal)'
             }}
           >
             Web & Brand
@@ -66,9 +66,9 @@ export default function Work() {
             className="hero-tag"
             style={{ 
               cursor: 'pointer',
-              background: filter === 'cannabis' ? 'var(--sage)' : 'transparent',
+              background: filter === 'cannabis' ? 'var(--purple)' : 'transparent',
               color: filter === 'cannabis' ? 'var(--black)' : 'var(--light-gray)',
-              borderColor: filter === 'cannabis' ? 'var(--sage)' : 'var(--charcoal)'
+              borderColor: filter === 'cannabis' ? 'var(--purple)' : 'var(--charcoal)'
             }}
           >
             Cannabis
@@ -97,7 +97,7 @@ export default function Work() {
                 <div>
                   <div
                     className="work-category"
-                    style={{ color: project.type === 'cannabis' ? 'var(--sage)' : 'var(--gold)' }}
+                    style={{ color: project.type === 'cannabis' ? 'var(--purple)' : 'var(--pink)' }}
                   >
                     {project.category}
                   </div>

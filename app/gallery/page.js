@@ -1,15 +1,50 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { galleryImages } from '@/lib/visuals'
+import { getDesigns, getDesignUrl } from '@/lib/supabase'
 
 export default function Gallery() {
   const [selectedImage, setSelectedImage] = useState(null)
+  const [images, setImages] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  // Use static gallery images from config
-  const images = galleryImages
+  useEffect(() => {
+    async function fetchImages() {
+      try {
+        const files = await getDesigns()
+
+        // Filter for image files
+        let imageFiles = files
+          .filter(file => file.name !== '.emptyFolderPlaceholder' && !file.name.startsWith('.'))
+          .map(file => ({
+            src: getDesignUrl(file.name),
+            alt: file.name.replace(/\.[^/.]+$/, "").replace(/-/g, " "),
+            name: file.name,
+            created_at: file.created_at || file.updated_at || new Date().toISOString() // Fallback
+          }))
+
+        // Sort by recently added (newest first)
+        imageFiles.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+
+        // Prioritize "exgire" image if it exists
+        const exgireIndex = imageFiles.findIndex(img => img.name.toLowerCase().includes('exgire'))
+        if (exgireIndex > -1) {
+          const exgireImage = imageFiles.splice(exgireIndex, 1)[0]
+          imageFiles.unshift(exgireImage)
+        }
+
+        setImages(imageFiles)
+      } catch (error) {
+        console.error('Error loading gallery:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchImages()
+  }, [])
 
   const openLightbox = (image) => {
     setSelectedImage(image)
@@ -20,52 +55,74 @@ export default function Gallery() {
   }
 
   return (
-    <div className="gallery-container">
+    <div className="min-h-screen bg-black relative pb-16">
       {/* Background */}
-      <div className="gallery-bg">
-        <div className="gradient-orb gradient-orb-1"></div>
-        <div className="gradient-orb gradient-orb-2"></div>
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-100px] right-[-100px] w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,var(--pink)_0%,transparent_70%)] blur-[80px] opacity-10 animate-[float_20s_ease-in-out_infinite]"></div>
+        <div className="absolute bottom-[-100px] left-[-100px] w-[350px] h-[350px] rounded-full bg-[radial-gradient(circle,var(--purple)_0%,transparent_70%)] blur-[80px] opacity-10 animate-[float_20s_ease-in-out_infinite_10s]"></div>
       </div>
 
       {/* Header */}
-      <header className="gallery-header">
-        <Link href="/" className="back-button">
+      <header className="relative z-10 flex items-center justify-between px-8 py-8 md:px-16 border-b border-white/5 backdrop-blur-xl bg-black/80">
+        <Link href="/" className="flex items-center gap-2 text-light-gray text-sm hover:text-white transition-colors duration-300">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M16 10H4M8 6l-4 4 4 4"/>
           </svg>
           Back
         </Link>
-        <h1 className="gallery-title">Gallery</h1>
-        <div style={{ width: '60px' }}></div>
+        <h1 className="font-serif text-2xl md:text-3xl text-white font-normal">Gallery</h1>
+        <div className="w-[60px]"></div>
       </header>
 
       {/* Content */}
-      <div className="gallery-content">
-        <div className="gallery-grid">
-          {images.map((image, index) => (
-            <div
-              key={image.src}
-              className="gallery-item"
-              onClick={() => openLightbox(image)}
-            >
-              <Image
-                src={image.src}
-                alt={image.alt}
-                width={600}
-                height={750}
-                className="w-full h-full object-cover"
-                loading={index < 6 ? "eager" : "lazy"}
-              />
-            </div>
-          ))}
-        </div>
+      <div className="relative z-1 max-w-[1600px] mx-auto px-4 md:px-8 py-12">
+        {loading ? (
+          <div className="flex flex-col items-center justify-center min-h-[60vh] text-center text-gray">
+            <div className="w-12 h-12 border-4 border-white/10 border-t-pink rounded-full animate-spin mb-4"></div>
+            <p>Loading gallery...</p>
+          </div>
+        ) : images.length === 0 ? (
+          <div className="flex flex-col items-center justify-center min-h-[60vh] text-center text-gray">
+            <p>No images found in gallery.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {images.map((image, index) => (
+              <div
+                key={image.name}
+                className="group relative aspect-[4/5] overflow-hidden rounded-lg cursor-pointer bg-charcoal/60 backdrop-blur-md border border-white/5 transition-all duration-300 hover:-translate-y-1 hover:border-pink/30 hover:shadow-xl"
+                onClick={() => openLightbox(image)}
+              >
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  width={600}
+                  height={750}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading={index < 10 ? "eager" : "lazy"}
+                  unoptimized
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+              </div>
+            ))}
+              </div>
+        )}
       </div>
 
       {/* Lightbox */}
       {selectedImage && (
-        <div className="lightbox" onClick={closeLightbox}>
-          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-            <button className="lightbox-close" onClick={closeLightbox}>
+        <div
+          className="fixed inset-0 bg-black/95 z-[1000] flex items-center justify-center p-8 cursor-zoom-out"
+          onClick={closeLightbox}
+        >
+          <div
+            className="relative max-w-[90vw] max-h-[90vh] cursor-default"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="absolute -top-12 right-0 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 border border-white/20 text-white transition-all duration-300 hover:bg-white/20 hover:rotate-90"
+              onClick={closeLightbox}
+            >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="18" y1="6" x2="6" y2="18"/>
                 <line x1="6" y1="6" x2="18" y2="18"/>
@@ -77,253 +134,11 @@ export default function Gallery() {
               width={1920}
               height={1200}
               className="max-w-full max-h-[90vh] object-contain rounded-lg"
+              unoptimized
             />
           </div>
         </div>
       )}
-
-      <style jsx>{`
-        .gallery-container {
-          min-height: 100vh;
-          background: #0a0a0a;
-          position: relative;
-          padding-bottom: 4rem;
-        }
-
-        .gallery-bg {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          overflow: hidden;
-          z-index: 0;
-        }
-
-        .gradient-orb {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(80px);
-          opacity: 0.1;
-          animation: float 20s ease-in-out infinite;
-        }
-
-        .gradient-orb-1 {
-          width: 400px;
-          height: 400px;
-          background: radial-gradient(circle, #c9a227 0%, transparent 70%);
-          top: -100px;
-          right: -100px;
-        }
-
-        .gradient-orb-2 {
-          width: 350px;
-          height: 350px;
-          background: radial-gradient(circle, #8b9a7d 0%, transparent 70%);
-          bottom: -100px;
-          left: -100px;
-          animation-delay: 10s;
-        }
-
-        @keyframes float {
-          0%, 100% { transform: translate(0, 0); }
-          33% { transform: translate(30px, -30px); }
-          66% { transform: translate(-20px, 20px); }
-        }
-
-        .gallery-header {
-          position: relative;
-          z-index: 10;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 2rem 4rem;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-          backdrop-filter: blur(20px);
-          background: rgba(10, 10, 10, 0.8);
-        }
-
-        .back-button {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          color: var(--light-gray);
-          text-decoration: none;
-          font-size: 0.9rem;
-          transition: color 0.3s ease;
-        }
-
-        .back-button:hover {
-          color: var(--white);
-        }
-
-        .gallery-title {
-          font-family: 'Instrument Serif', serif;
-          font-size: 2rem;
-          font-weight: 400;
-          color: var(--white);
-        }
-
-        .gallery-content {
-          position: relative;
-          z-index: 1;
-          max-width: 1400px;
-          margin: 0 auto;
-          padding: 4rem 2rem;
-        }
-
-        .gallery-loading,
-        .gallery-empty {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          min-height: 60vh;
-          text-align: center;
-          color: var(--gray);
-        }
-
-        .gallery-empty svg {
-          margin-bottom: 2rem;
-          opacity: 0.3;
-        }
-
-        .gallery-empty h2 {
-          font-size: 1.5rem;
-          color: var(--white);
-          margin-bottom: 0.5rem;
-        }
-
-        .gallery-empty p {
-          color: var(--gray);
-          font-size: 1rem;
-        }
-
-        .loading-spinner {
-          width: 50px;
-          height: 50px;
-          border: 3px solid rgba(255, 255, 255, 0.1);
-          border-top: 3px solid var(--gold);
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-          margin-bottom: 1rem;
-        }
-
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-
-        .gallery-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-          gap: 2rem;
-        }
-
-        .gallery-item {
-          position: relative;
-          aspect-ratio: 1;
-          overflow: hidden;
-          border-radius: 12px;
-          cursor: pointer;
-          background: rgba(26, 26, 26, 0.6);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          transition: all 0.3s ease;
-        }
-
-        .gallery-item:hover {
-          transform: translateY(-4px);
-          border-color: rgba(201, 162, 39, 0.3);
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-        }
-
-        .gallery-item img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.3s ease;
-        }
-
-        .gallery-item:hover img {
-          transform: scale(1.05);
-        }
-
-        .lightbox {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0, 0, 0, 0.95);
-          z-index: 1000;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 2rem;
-          cursor: zoom-out;
-        }
-
-        .lightbox-content {
-          position: relative;
-          max-width: 90vw;
-          max-height: 90vh;
-          cursor: default;
-        }
-
-        .lightbox-content img {
-          max-width: 100%;
-          max-height: 90vh;
-          object-fit: contain;
-          border-radius: 8px;
-        }
-
-        .lightbox-close {
-          position: absolute;
-          top: -50px;
-          right: 0;
-          background: rgba(255, 255, 255, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          border-radius: 50%;
-          width: 40px;
-          height: 40px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          color: white;
-          transition: all 0.3s ease;
-        }
-
-        .lightbox-close:hover {
-          background: rgba(255, 255, 255, 0.2);
-          transform: rotate(90deg);
-        }
-
-        @media (max-width: 768px) {
-          .gallery-header {
-            padding: 1.5rem 2rem;
-          }
-
-          .gallery-title {
-            font-size: 1.5rem;
-          }
-
-          .gallery-grid {
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem;
-          }
-
-          .gallery-content {
-            padding: 2rem 1rem;
-          }
-
-          .lightbox-close {
-            top: 10px;
-            right: 10px;
-          }
-        }
-      `}</style>
     </div>
   )
 }

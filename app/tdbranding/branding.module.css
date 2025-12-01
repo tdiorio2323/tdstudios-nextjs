@@ -10,7 +10,7 @@
 }
 
 .label {
-    color: var(--gold);
+    color: var(--pink);
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.2em;
@@ -155,7 +155,7 @@
 }
 
 .btnPrimary:hover {
-    background: var(--sage);
+    background: var(--purple);
 }
 
 .btnSecondary {
@@ -209,17 +209,17 @@
 
 .themeBtn:hover,
 .themeBtn.active {
-    border-color: var(--gold);
+    border-color: var(--pink);
     background: var(--black);
 }
 
 .themeBtn.active {
-    color: var(--gold);
+    color: var(--pink);
 }
 
 .themePreview {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background: var(--gold);
+    background: var(--pink);
 }
