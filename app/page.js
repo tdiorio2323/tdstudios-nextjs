@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { heroVisual } from '@/lib/visuals'
 
 export default function Home() {
   const [email, setEmail] = useState('')
@@ -22,11 +21,12 @@ export default function Home() {
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <Image
-          src={heroVisual.src}
-          alt={heroVisual.alt}
+          src="/placeholders/hero-main.jpg"
+          alt="TD Studios - Premium Web Design & Branding"
           fill
           className="object-cover opacity-40"
           priority
+          sizes="100vw"
         />
         <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
       </div>
