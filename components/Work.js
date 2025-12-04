@@ -10,8 +10,8 @@ export default function Work() {
           <div className="text-xs font-semibold tracking-[0.3em] uppercase text-gray mb-6">Selected Work</div>
           <h2 className="font-serif text-[clamp(2.5rem,5vw,4rem)] leading-[1.1] text-white">Recent projects</h2>
         </div>
-        <Link href="/work" className="group inline-flex items-center gap-3 text-[0.85rem] font-medium tracking-wider uppercase text-white hover:gap-5 transition-all duration-300">
-          View All
+        <Link href="/inquire" className="group inline-flex items-center gap-3 text-[0.85rem] font-medium tracking-wider uppercase text-white hover:gap-5 transition-all duration-300">
+          Inquire
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5">
             <path d="M4 10h12M12 6l4 4-4 4"/>
           </svg>

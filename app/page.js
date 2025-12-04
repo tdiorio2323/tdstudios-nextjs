@@ -20,9 +20,7 @@ export default function Home() {
         titleEmphasis="your brand?"
         subtitle="Whether you're launching something new or leveling up what you've built, we're here to help you stand out."
         primaryButtonText="Start a Project"
-        primaryButtonHref="/contact"
-        secondaryButtonText="View Our Work"
-        secondaryButtonHref="/work"
+        primaryButtonHref="/inquire"
       />
       <Footer />
     </main>
