@@ -1,6 +1,6 @@
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
-import Link from 'next/link'
+import CTA from '@/components/CTA'
 import Image from 'next/image'
 import { cannabisShots } from '@/lib/visuals'
 
@@ -121,22 +121,12 @@ export default function Cannabis() {
       </section>
 
       {/* CTA Section */}
-      <section className="cta">
-        <div className="cta-bg"></div>
-        <div className="cta-content">
-          <h2 className="cta-title">Ready to build your cannabis brand?</h2>
-          <p className="cta-sub">Let&apos;s discuss your vision and how we can help you stand out in the market.</p>
-          <div className="cta-buttons">
-            <Link href="/contact" className="cta-button cta-button-primary">
-              Start a Project
-              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M4 10h12M12 6l4 4-4 4"/>
-              </svg>
-            </Link>
-            <Link href="/work" className="cta-button cta-button-secondary">View Our Work</Link>
-          </div>
-        </div>
-      </section>
+      <CTA
+        title="Ready to build your cannabis brand?"
+        subtitle="Let's discuss your vision and how we can help you stand out in the market."
+        primaryButtonText="Start a Project"
+        secondaryButtonText="View Our Work"
+      />
 
       <Footer />
     </>

@@ -3,7 +3,8 @@ import Footer from '@/components/Footer'
 import Hero from '@/components/Hero'
 import Services from '@/components/Services'
 import Work from '@/components/Work'
-import { Marquee, Approach, CTA } from '@/components/HomeSections'
+import { Marquee, Approach } from '@/components/HomeSections'
+import CTA from '@/components/CTA'
 
 export default function Home() {
   return (
@@ -14,7 +15,15 @@ export default function Home() {
       <Work />
       <Marquee />
       <Approach />
-      <CTA />
+      <CTA
+        title="Ready to elevate your brand?"
+        titleEmphasis="your brand?"
+        subtitle="Whether you're launching something new or leveling up what you've built, we're here to help you stand out."
+        primaryButtonText="Start a Project"
+        primaryButtonHref="/contact"
+        secondaryButtonText="View Our Work"
+        secondaryButtonHref="/work"
+      />
       <Footer />
     </main>
   )

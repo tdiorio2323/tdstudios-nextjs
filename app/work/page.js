@@ -3,40 +3,37 @@
 import { useState } from 'react'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
+import CTA from '@/components/CTA'
 import Link from 'next/link'
 import Image from 'next/image'
-import { portfolioProjects } from '@/lib/visuals'
+import { caseStudies, getCaseStudiesByType } from '@/lib/caseStudies'
 
 export default function Work() {
   const [filter, setFilter] = useState('all')
 
-  const filteredProjects = filter === 'all' 
-    ? portfolioProjects
-    : portfolioProjects.filter(p => p.type === filter)
+  const filteredProjects = getCaseStudiesByType(filter)
 
   return (
     <>
       <Navigation />
 
       {/* Page Header */}
-      <section className="page-header">
-        <div className="page-header-bg"></div>
-        <div className="page-header-content">
-          <div className="section-label">Our Work</div>
-          <h1 className="page-title">Projects that move the needle</h1>
-          <p className="page-subtitle">A selection of our work across web design, brand identity, and cannabis packaging. Each project built to perform.</p>
+      <section className="relative min-h-[60vh] flex flex-col justify-center px-8 md:px-16 pt-32 pb-20 overflow-hidden">
+        {/* Background */}
+        <div className="absolute inset-0 z-0 bg-gradient-to-b from-charcoal/40 via-black/60 to-black"></div>
+
+        {/* Content */}
+        <div className="relative z-10 max-w-[1400px] w-full mx-auto">
+          <div className="text-xs font-semibold tracking-[0.3em] uppercase text-gray mb-6">Our Work</div>
+          <h1 className="font-serif text-[clamp(3rem,7vw,5rem)] leading-[1.1] text-white mb-6">Projects that move the needle</h1>
+          <p className="text-lg md:text-xl font-normal text-gray max-w-[650px] leading-relaxed">A selection of our work across web design, brand identity, and cannabis packaging. Each project built to perform.</p>
         </div>
       </section>
 
       {/* Filter + Work Grid */}
-      <section className="work" style={{ paddingTop: '4rem' }}>
+      <section className="py-24 px-8 md:px-16">
         {/* Filter Buttons */}
-        <div className="work-filters" style={{ 
-          display: 'flex', 
-          gap: '1rem', 
-          marginBottom: '4rem',
-          flexWrap: 'wrap'
-        }}>
+        <div className="flex gap-4 mb-16 flex-wrap max-w-[1400px] mx-auto">
           <button 
             onClick={() => setFilter('all')}
             className="hero-tag"
@@ -76,34 +73,36 @@ export default function Work() {
         </div>
 
         {/* Projects Grid */}
-        <div className="work-grid">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-[1400px] mx-auto">
           {filteredProjects.map((project, index) => (
             <Link
               key={project.id}
               href={`/work/${project.slug}`}
-              className="work-item"
+              className="group block relative text-white"
             >
-              <div className="work-image">
+              <div className="w-full aspect-[16/10] bg-charcoal relative overflow-hidden mb-6">
                 <Image
                   src={project.image}
                   alt={project.name}
                   width={1200}
                   height={750}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-95"
                 />
-                <div className="work-image-inner">{String(index + 1).padStart(2, '0')}</div>
+                {/* Number Overlay */}
+                <div className="absolute inset-0 flex items-center justify-center font-serif text-[2rem] italic text-white opacity-20">
+                  {String(index + 1).padStart(2, '0')}
+                </div>
               </div>
-              <div className="work-info">
+              <div className="flex justify-between items-start py-2">
                 <div>
                   <div
-                    className="work-category"
-                    style={{ color: project.type === 'cannabis' ? 'var(--purple)' : 'var(--pink)' }}
+                    className={`text-[0.7rem] font-semibold tracking-[0.15em] uppercase mb-2 ${project.type === 'cannabis' ? 'text-purple' : 'text-pink'}`}
                   >
                     {project.category}
                   </div>
-                  <h3 className="work-title">{project.name}</h3>
+                  <h3 className="font-serif text-2xl">{project.name}</h3>
                 </div>
-                <span className="work-year">{project.year}</span>
+                <span className="text-gray text-[0.85rem]">{project.year}</span>
               </div>
             </Link>
           ))}
@@ -111,21 +110,11 @@ export default function Work() {
       </section>
 
       {/* CTA Section */}
-      <section className="cta">
-        <div className="cta-bg"></div>
-        <div className="cta-content">
-          <h2 className="cta-title">Ready to join them?</h2>
-          <p className="cta-sub">Let&apos;s discuss how we can help bring your vision to life.</p>
-          <div className="cta-buttons">
-            <Link href="/contact" className="cta-button cta-button-primary">
-              Start Your Project
-              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M4 10h12M12 6l4 4-4 4"/>
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </section>
+      <CTA
+        title="Ready to join them?"
+        subtitle="Let's discuss how we can help bring your vision to life."
+        primaryButtonText="Start Your Project"
+      />
 
       <Footer />
     </>

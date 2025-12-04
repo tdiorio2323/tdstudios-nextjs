@@ -100,7 +100,6 @@ export default function Gallery() {
                   height={750}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   loading={index < 10 ? "eager" : "lazy"}
-                  unoptimized
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
               </div>
@@ -134,7 +133,6 @@ export default function Gallery() {
               width={1920}
               height={1200}
               className="max-w-full max-h-[90vh] object-contain rounded-lg"
-              unoptimized
             />
           </div>
         </div>

@@ -35,7 +35,7 @@ export function Approach() {
           <p className="text-gray leading-[1.8] mb-12 text-lg">
             We don&apos;t just make things look good — we build brands that perform. Every project begins with understanding your business, your audience, and what success looks like for you.
           </p>
-          
+
           <div className="grid gap-10">
             {[
               { num: '01', title: 'Strategic Foundation', desc: 'Research and strategy before pixels. We understand your market, competitors, and customers before we design anything.' },
@@ -52,37 +52,10 @@ export function Approach() {
             ))}
           </div>
         </div>
-        
+
         {/* Visual Placeholder */}
         <div className="relative h-[500px] w-full bg-black/50 rounded-lg overflow-hidden border border-white/5">
            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(244,114,182,0.1),transparent_70%)]" />
-        </div>
-      </div>
-    </section>
-  )
-}
-
-export function CTA() {
-  return (
-    <section className="relative py-40 px-8 text-center overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-black to-charcoal z-0" />
-      <div className="relative z-10 max-w-3xl mx-auto">
-        <h2 className="font-serif text-[clamp(3rem,6vw,5rem)] leading-tight mb-6 text-white">
-          Ready to elevate <em className="italic text-pink">your brand?</em>
-        </h2>
-        <p className="text-xl text-gray mb-12 max-w-xl mx-auto">
-          Whether you&apos;re launching something new or leveling up what you&apos;ve built, we&apos;re here to help you stand out.
-        </p>
-        <div className="flex flex-col sm:flex-row justify-center gap-6">
-          <Link href="/contact" className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-black font-semibold uppercase tracking-wider hover:bg-pink transition-colors duration-300">
-            Start a Project
-            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
-              <path d="M4 10h12M12 6l4 4-4 4"/>
-            </svg>
-          </Link>
-          <Link href="/work" className="inline-flex items-center justify-center px-8 py-4 border border-white text-white font-semibold uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300">
-            View Our Work
-          </Link>
         </div>
       </div>
     </section>

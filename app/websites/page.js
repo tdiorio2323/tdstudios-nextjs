@@ -1,6 +1,6 @@
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
-import Link from 'next/link'
+import CTA from '@/components/CTA'
 
 export const metadata = {
   title: 'Website Design & Development',
@@ -100,22 +100,12 @@ export default function Websites() {
       </section>
 
       {/* CTA Section */}
-      <section className="cta">
-        <div className="cta-bg"></div>
-        <div className="cta-content">
-          <h2 className="cta-title">Ready for a website that converts?</h2>
-          <p className="cta-sub">Let&apos;s discuss your project and how we can help you achieve your goals.</p>
-          <div className="cta-buttons">
-            <Link href="/contact" className="cta-button cta-button-primary">
-              Start a Project
-              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M4 10h12M12 6l4 4-4 4"/>
-              </svg>
-            </Link>
-            <Link href="/work" className="cta-button cta-button-secondary">View Our Work</Link>
-          </div>
-        </div>
-      </section>
+      <CTA
+        title="Ready for a website that converts?"
+        subtitle="Let's discuss your project and how we can help you achieve your goals."
+        primaryButtonText="Start a Project"
+        secondaryButtonText="View Our Work"
+      />
 
       <Footer />
     </>

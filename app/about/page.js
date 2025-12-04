@@ -1,5 +1,6 @@
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
+import CTA from '@/components/CTA'
 import Link from 'next/link'
 import Image from 'next/image'
 import { aboutVisual } from '@/lib/visuals'
@@ -114,22 +115,12 @@ export default function About() {
       </section>
 
       {/* CTA Section */}
-      <section className="cta">
-        <div className="cta-bg"></div>
-        <div className="cta-content">
-          <h2 className="cta-title">Ready to get started?</h2>
-          <p className="cta-sub">Let&apos;s talk about your project and see how we can help.</p>
-          <div className="cta-buttons">
-            <Link href="/contact" className="cta-button cta-button-primary">
-              Start a Project
-              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M4 10h12M12 6l4 4-4 4"/>
-              </svg>
-            </Link>
-            <Link href="/work" className="cta-button cta-button-secondary">View Work</Link>
-          </div>
-        </div>
-      </section>
+      <CTA
+        title="Ready to get started?"
+        subtitle="Let's talk about your project and see how we can help."
+        primaryButtonText="Start a Project"
+        secondaryButtonText="View Work"
+      />
 
       <Footer />
     </>

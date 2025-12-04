@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { portfolioProjects } from '@/lib/visuals'
+import { caseStudies } from '@/lib/caseStudies'
 
 export default function Work() {
   return (
@@ -19,7 +19,7 @@ export default function Work() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {portfolioProjects.slice(0, 4).map((project, index) => (
+        {caseStudies.slice(0, 4).map((project, index) => (
           <Link
             key={project.slug}
             href={`/work/${project.slug}`}

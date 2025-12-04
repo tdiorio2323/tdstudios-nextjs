@@ -12,7 +12,6 @@ const themes = {
             '--black': '#0a0a0a',
             '--white': '#f5f5f0',
             '--cream': '#e8e4dc',
-            '--sage': '#8b9a7d', // Keeping value but key might need change if we want consistency, but let's just change keys to match new system
             '--purple': '#8b9a7d',
             '--purple-dark': '#6b7a5d',
             '--pink': '#c9a227',
