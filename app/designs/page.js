@@ -133,9 +133,9 @@ export default function Designs() {
       }
 
       // Filter out folders and placeholder files
+      // Filter out folders and placeholder files
       const imageFiles = files.filter(
         (file) =>
-          !file.id?.endsWith('/') &&
           file.name &&
           !file.name.startsWith('.') &&
           /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(file.name)
@@ -315,7 +315,7 @@ export default function Designs() {
         {!loading && !error && designs.length === 0 && (
           <div className="text-center py-20">
             <p className="text-light-gray text-lg">
-              No designs found in the catalog.
+              No designs found.
             </p>
           </div>
         )}
