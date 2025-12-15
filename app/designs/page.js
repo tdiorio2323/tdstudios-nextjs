@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
+import Image from 'next/image'
 
 // Category configuration - exact order specified
 const CATEGORIES = [
@@ -365,7 +366,7 @@ export default function Designs() {
                       }}
                     />
 
-                    {/* TD Studios Text Watermark - Center */}
+                    {/* TD Studios Logo Watermark - Center */}
                     <div
                       className="absolute inset-0 flex items-center justify-center pointer-events-none"
                       style={{
@@ -373,50 +374,23 @@ export default function Designs() {
                         WebkitUserSelect: 'none',
                       }}
                     >
-                      <div
-                        className="font-serif text-white opacity-90"
+                      <Image
+                        src="/images/td-studios-xmas-logo.png"
+                        alt="TD Studios"
+                        width={500}
+                        height={500}
+                        className="w-[65%] h-auto"
                         style={{
-                          fontSize: 'clamp(32px, 10vw, 64px)',
-                          letterSpacing: '0.2em',
-                          textShadow: '0 0 20px rgba(0,0,0,0.8)',
+                          maxWidth: '780px',
+                          opacity: 0.85,
+                          pointerEvents: 'none',
                           userSelect: 'none',
                           WebkitUserSelect: 'none',
+                          WebkitUserDrag: 'none',
                         }}
-                      >
-                        TD STUDIOS NY
-                      </div>
-                    </div>
-
-                    {/* Enhanced CSS Watermark - Diagonal Repeating Pattern */}
-                    <div
-                      className="absolute inset-0 pointer-events-none"
-                      style={{
-                        background: `repeating-linear-gradient(
-                          45deg,
-                          transparent,
-                          transparent 100px,
-                          rgba(167, 139, 250, 0.03) 100px,
-                          rgba(167, 139, 250, 0.03) 102px
-                        )`,
-                        userSelect: 'none',
-                        WebkitUserSelect: 'none',
-                      }}
-                    >
-                      <div
-                        className="absolute inset-0 flex items-center justify-center"
-                        style={{
-                          fontSize: 'clamp(24px, 8vw, 48px)',
-                          fontFamily: 'Syne, sans-serif',
-                          color: 'rgba(167, 139, 250, 0.08)',
-                          transform: 'rotate(-45deg)',
-                          textShadow: '0 0 10px rgba(0,0,0,0.5)',
-                          letterSpacing: '0.1em',
-                          userSelect: 'none',
-                          WebkitUserSelect: 'none',
-                        }}
-                      >
-                        TD STUDIOS NY
-                      </div>
+                        draggable="false"
+                        priority={false}
+                      />
                     </div>
 
                     {/* Transparent Overlay - Captures pointer events */}
@@ -553,7 +527,7 @@ export default function Designs() {
                 }}
               />
 
-              {/* TD Studios Text Watermark - Center (Modal) */}
+              {/* TD Studios Logo Watermark - Center (Modal) */}
               <div
                 className="absolute inset-0 flex items-center justify-center pointer-events-none"
                 style={{
@@ -561,50 +535,23 @@ export default function Designs() {
                   WebkitUserSelect: 'none',
                 }}
               >
-                <div
-                  className="font-serif text-white opacity-90"
+                <Image
+                  src="/images/td-studios-xmas-logo.png"
+                  alt="TD Studios"
+                  width={600}
+                  height={600}
+                  className="w-[40%] h-auto"
                   style={{
-                    fontSize: 'clamp(48px, 8vw, 96px)',
-                    letterSpacing: '0.2em',
-                    textShadow: '0 0 30px rgba(0,0,0,0.9)',
+                    maxWidth: '500px',
+                    opacity: 0.85,
+                    pointerEvents: 'none',
                     userSelect: 'none',
                     WebkitUserSelect: 'none',
+                    WebkitUserDrag: 'none',
                   }}
-                >
-                  TD STUDIOS NY
-                </div>
-              </div>
-
-              {/* Enhanced CSS Watermark - Diagonal Repeating Pattern (Modal) */}
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background: `repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 120px,
-                    rgba(167, 139, 250, 0.04) 120px,
-                    rgba(167, 139, 250, 0.04) 122px
-                  )`,
-                  userSelect: 'none',
-                  WebkitUserSelect: 'none',
-                }}
-              >
-                <div
-                  className="absolute inset-0 flex items-center justify-center"
-                  style={{
-                    fontSize: 'clamp(32px, 5vw, 64px)',
-                    fontFamily: 'Syne, sans-serif',
-                    color: 'rgba(167, 139, 250, 0.1)',
-                    transform: 'rotate(-45deg)',
-                    textShadow: '0 0 15px rgba(0,0,0,0.6)',
-                    letterSpacing: '0.15em',
-                    userSelect: 'none',
-                    WebkitUserSelect: 'none',
-                  }}
-                >
-                  TD STUDIOS NY
-                </div>
+                  draggable="false"
+                  priority={false}
+                />
               </div>
 
               {/* Transparent Overlay on Modal Image */}
