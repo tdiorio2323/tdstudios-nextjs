@@ -62,6 +62,7 @@ export default function Navigation() {
 
         <ul className="hidden md:flex gap-12 list-none">
           {[
+            { name: 'Design Catalog', href: '/designs' },
             { name: 'Inquire', href: '/inquire' },
             { name: 'About', href: '/about' },
             { name: 'Contact', href: 'tel:3474859935' }
@@ -115,6 +116,7 @@ export default function Navigation() {
       >
         {[
           { name: 'Home', href: '/' },
+          { name: 'Design Catalog', href: '/designs' },
           { name: 'Inquire', href: '/inquire' },
           { name: 'About', href: '/about' },
           { name: 'Contact', href: 'tel:3474859935' }

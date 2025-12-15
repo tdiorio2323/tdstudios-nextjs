@@ -43,6 +43,7 @@ npm run lint
 - `app/page.js` - Home page with hero, services, work sections, and CTA
 - `app/work/page.js` - Portfolio/work page
 - `app/work/[slug]/page.js` - Dynamic case study pages (8 projects: apex-ventures, emerald-valley, modernist-studio, high-tide-collective, northwind-tech, terra-bloom, cascade-financial, green-state-labs)
+- `app/designs/page.js` - **Design Catalog** - Browse designs from Supabase storage with category filtering, watermarks, and anti-save protections
 - `app/about/page.js` - About page
 - `app/contact/page.js` - Contact page with form
 - `app/websites/page.js` - Websites service page
@@ -84,6 +85,7 @@ npm run lint
 ### Data & Configuration
 
 - `lib/visuals.js` - **Central configuration for all visual assets** (hero images, portfolio projects, service icons, gallery images, cannabis imagery). This is the single source of truth for image paths across the site.
+- `lib/caseStudies.js` - **Single source of truth for all case study/project data**. Contains complete data for 8 case studies with fields: slug, title, category, type, year, description, image, client, services, duration, overview, challenge, solution, results, testimonial.
 - `lib/supabase.js` - Supabase client configuration with helper functions: `getDesigns()`, `getDesignUrl(path)`. Used for fetching images from Supabase storage bucket 'designs'.
 
 ### Path Aliases
@@ -178,11 +180,15 @@ When adding new pages, use Next.js metadata exports for SEO.
 
 ### Case Study Pages (`/work/[slug]`)
 
-Case study data is hardcoded in `app/work/[slug]/page.js` with the following structure:
+Case study data is centralized in `lib/caseStudies.js`. The module exports:
+- `caseStudies` - Array of all case study objects
+- `caseStudySlugs` - Array of valid slugs
+- `getCaseStudyBySlug(slug)` - Helper function to retrieve case study by slug
 
+**Data structure:**
 ```javascript
 {
-  title, category, type, year, description,
+  title, category, type, year, description, image,
   client, services[], duration,
   overview, challenge, solution,
   results[], testimonial: { quote, author, role }
@@ -212,7 +218,7 @@ Case study data is hardcoded in `app/work/[slug]/page.js` with the following str
 - Device sizes: 640, 750, 828, 1080, 1200, 1920, 2048, 3840
 - Image sizes: 16, 32, 48, 64, 96, 128, 256, 384
 - Compression enabled
-- Remote patterns configured for Supabase CDN: `crpalakzdzvtgvljlutd.supabase.co`
+- Remote patterns configured for Supabase CDN: `ecdastbzvypuidplpryf.supabase.co`
 
 **Image paths management:**
 - All visual asset paths are centralized in `lib/visuals.js`
@@ -232,12 +238,54 @@ Case study data is hardcoded in `app/work/[slug]/page.js` with the following str
 
 **Usage:** Import from `@/lib/supabase` when fetching remote images.
 
+## Design Catalog Feature
+
+The `/designs` route displays a filterable catalog of design assets stored in Supabase.
+
+### Implementation Details
+
+**Data Source:**
+- Reads from Supabase storage bucket: `designs`
+- Folder: `catalog/`
+- Auto-categorizes designs based on filename keywords
+
+**Categories (in order):**
+- ALL, Nerds, Dirty Fanta, Hi-C, Mamba, Ring Pop, Skittles, Hi-Chew, Creme Savers, Calypso
+
+**Filename Auto-Categorization:**
+- Case-insensitive matching with keyword detection
+- Handles hyphens, underscores, and spaces as equivalent
+- Special cases: "df" → Dirty Fanta, "hic" → Hi-C, etc.
+- Uncategorized items still visible in "ALL"
+
+**Anti-Save Protection:**
+- Context menu blocking (right-click disabled)
+- Drag-start prevention
+- Keyboard shortcut blocking (Ctrl/Cmd+S, Ctrl/Cmd+P)
+- CSS user-select disabled
+- WebKit touch callout disabled
+- Transparent overlay captures pointer events
+- Multiple watermark layers (text + diagonal pattern)
+
+**UI Features:**
+- Responsive grid: 2 cols (mobile), 3 cols (tablet), 4 cols (desktop)
+- Horizontal scrollable category tabs (swipeable on mobile)
+- Modal/lightbox for full-size viewing
+- Watermark: "TD STUDIOS NY" (center text + diagonal repeating pattern)
+- Pagination support (200 items per page)
+
+**Watermark Styling:**
+- Grid cards: Large serif text watermark + subtle diagonal repeating text
+- Modal view: Larger watermark with enhanced opacity
+- Purple-tinted diagonal lines for brand consistency
+
 ## Important Notes
 
 - **No TypeScript**: Uses JavaScript with JSConfig for path aliases
 - **Tailwind CSS**: Use utility classes first, custom CSS in globals.css when needed
 - **No test framework configured**: Tests would need to be added if required
-- **Static export ready**: Can enable `output: 'export'` in `next.config.js` for static site generation
+- **Static export ready**: Can enable `output: 'export'` in `next.config.js` for static site generation (note: Design Catalog requires server-side Supabase access)
 - **Form handling**: Contact form currently has client-side state only (no backend submission configured)
 - **Gallery**: Dynamically loads images from file system via API route
+- **Design Catalog**: Loads from Supabase storage `designs/catalog/` with anti-save protections
 - **Visual assets**: Always reference `lib/visuals.js` for image paths to maintain consistency
