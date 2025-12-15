@@ -93,6 +93,13 @@ export default function Designs() {
       setLoading(true)
       setError(null)
 
+      // Validate environment variables before making API calls
+      if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+        throw new Error(
+          'Supabase environment variables are missing. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel and redeploy.'
+        )
+      }
+
       // List files from the catalog folder
       const { data: files, error: listError } = await supabase.storage
         .from('designs')
@@ -156,7 +163,11 @@ export default function Designs() {
       setHasMore(files.length === LIMIT)
     } catch (err) {
       console.error('Error fetching designs:', err)
-      setError(err instanceof Error ? err.message : 'Failed to load designs')
+      // Provide user-friendly error message
+      const errorMessage = err instanceof Error
+        ? err.message
+        : 'Failed to load designs. Please try again later.'
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }
@@ -261,16 +272,42 @@ export default function Designs() {
 
         {/* Error State */}
         {error && !loading && (
-          <div className="text-center py-20">
-            <p className="text-pink text-lg mb-4">
-              Error loading designs: {error}
-            </p>
-            <button
-              onClick={fetchDesigns}
-              className="px-6 py-3 border border-white text-white hover:bg-white hover:text-black transition-all"
-            >
-              Try Again
-            </button>
+          <div className="text-center py-20 max-w-2xl mx-auto">
+            <div className="bg-charcoal border border-pink/20 rounded-lg p-8">
+              <svg
+                className="mx-auto h-12 w-12 text-pink mb-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              <h2 className="text-xl font-semibold text-white mb-2">Configuration Error</h2>
+              <p className="text-pink text-base mb-6">{error}</p>
+              {error.includes('environment variables') && (
+                <div className="bg-black/50 rounded p-4 mb-6 text-left">
+                  <p className="text-light-gray text-sm mb-2">To fix this issue:</p>
+                  <ol className="text-light-gray text-sm space-y-1 list-decimal list-inside">
+                    <li>Go to your Vercel dashboard</li>
+                    <li>Navigate to Settings → Environment Variables</li>
+                    <li>Add NEXT_PUBLIC_SUPABASE_URL</li>
+                    <li>Add NEXT_PUBLIC_SUPABASE_ANON_KEY</li>
+                    <li>Redeploy your application</li>
+                  </ol>
+                </div>
+              )}
+              <button
+                onClick={fetchDesigns}
+                className="px-6 py-3 border border-purple text-white hover:bg-purple hover:border-purple transition-all rounded"
+              >
+                Try Again
+              </button>
+            </div>
           </div>
         )}
 
