@@ -79,10 +79,6 @@ export default function Designs() {
     }
   }
 
-  const handleSelectStart = (e) => {
-    e.preventDefault()
-  }
-
   const handleTouchStart = (e) => {
     // Prevent long-press on iOS
     if (e.touches.length > 1) {
@@ -238,7 +234,6 @@ export default function Designs() {
         className="container mx-auto px-4 py-16 mt-16"
         onContextMenu={handleContextMenu}
         onDragStart={handleDragStart}
-        onSelectStart={handleSelectStart}
         onTouchStart={handleTouchStart}
         style={{
           userSelect: 'none',
@@ -501,7 +496,6 @@ export default function Designs() {
           onClick={closeModal}
           onContextMenu={handleContextMenu}
           onDragStart={handleDragStart}
-          onSelectStart={handleSelectStart}
           onTouchStart={handleTouchStart}
           style={{
             userSelect: 'none',
