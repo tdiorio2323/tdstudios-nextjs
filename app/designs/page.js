@@ -393,7 +393,32 @@ export default function Designs() {
                       }}
                     />
 
-                    {/* TD Studios Logo Watermark - Center */}
+                    {/* Diamond Checker Pattern Watermark - Layer 1 */}
+                    <div
+                      className="absolute inset-0 pointer-events-none"
+                      style={{
+                        backgroundImage: `
+                          repeating-linear-gradient(
+                            45deg,
+                            transparent,
+                            transparent 20px,
+                            rgba(167, 139, 250, 0.08) 20px,
+                            rgba(167, 139, 250, 0.08) 40px
+                          ),
+                          repeating-linear-gradient(
+                            -45deg,
+                            transparent,
+                            transparent 20px,
+                            rgba(167, 139, 250, 0.08) 20px,
+                            rgba(167, 139, 250, 0.08) 40px
+                          )
+                        `,
+                        userSelect: 'none',
+                        WebkitUserSelect: 'none',
+                      }}
+                    />
+
+                    {/* TD Studios Logo Watermark - Layer 2 (Center) */}
                     <div
                       className="absolute inset-0 flex items-center justify-center pointer-events-none"
                       style={{
