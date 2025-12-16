@@ -46,6 +46,7 @@ npm run lint
 - `app/designs/page.js` - **Design Catalog** - Browse designs from Supabase storage with category filtering, watermarks, and anti-save protections
 - `app/about/page.js` - About page
 - `app/contact/page.js` - Contact page with form
+- `app/inquire/page.js` - Inquiry page (uses ContactClient component)
 - `app/websites/page.js` - Websites service page
 - `app/cannabis/page.js` - Cannabis branding service page
 - `app/tdbranding/page.js` - TD Branding page
@@ -225,18 +226,40 @@ Case study data is centralized in `lib/caseStudies.js`. The module exports:
 - When adding new images, update this file to maintain consistency
 - Use Next.js `<Image>` component for optimization
 
+## Environment Variables
+
+Required environment variables (configured in `.env.local` for local development, Vercel dashboard for production):
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=https://ecdastbzvypuidplpryf.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-anon-key>
+```
+
+**Important:**
+- Environment variable values are sanitized in `lib/supabase.js` (whitespace removal) to prevent "Invalid header" errors
+- Missing environment variables will throw an error on build with helpful message
+- `.env.local` is gitignored but currently checked into repository - consider removing from git history if exposing secrets
+
 ## Supabase Integration
 
 **Configuration:**
 - Client initialized in `lib/supabase.js`
 - Environment variables: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - Storage bucket: `designs`
+- **Environment validation:** Client creation validates required env vars and sanitizes them (removes whitespace/hidden characters)
 
 **Helper functions:**
 - `getDesigns()` - Fetches list of designs from Supabase storage (max 100, sorted by newest)
 - `getDesignUrl(path)` - Returns public URL for a design file
 
 **Usage:** Import from `@/lib/supabase` when fetching remote images.
+
+**Error handling pattern:**
+```javascript
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('Missing Supabase environment variables...')
+}
+```
 
 ## Design Catalog Feature
 
@@ -289,3 +312,4 @@ The `/designs` route displays a filterable catalog of design assets stored in Su
 - **Gallery**: Dynamically loads images from file system via API route
 - **Design Catalog**: Loads from Supabase storage `designs/catalog/` with anti-save protections
 - **Visual assets**: Always reference `lib/visuals.js` for image paths to maintain consistency
+- **Environment variables**: `.env.local` exists locally but should NOT be committed to git (currently is - consider cleaning git history if needed)
