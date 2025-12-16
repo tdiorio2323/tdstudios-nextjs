@@ -60,7 +60,6 @@ export default function Designs() {
   const [error, setError] = useState(null)
   const [page, setPage] = useState(0)
   const [hasMore, setHasMore] = useState(false)
-  const [selectedImage, setSelectedImage] = useState(null)
   const [activeCategory, setActiveCategory] = useState('ALL')
 
   const LIMIT = 200
@@ -225,14 +224,6 @@ export default function Designs() {
     }
   }
 
-  const openModal = (design) => {
-    setSelectedImage(design)
-  }
-
-  const closeModal = () => {
-    setSelectedImage(null)
-  }
-
   const handleCategoryChange = (category) => {
     setActiveCategory(category)
   }
@@ -259,7 +250,7 @@ export default function Designs() {
             Design Catalog
           </h1>
           <p className="text-lg text-light-gray max-w-2xl mx-auto">
-            Browse our collection of custom designs. Click any image to view it in full size.
+            Browse our collection of custom designs.
           </p>
         </div>
 
@@ -375,8 +366,7 @@ export default function Designs() {
               {filteredDesigns.map((design) => (
                 <div
                   key={design.name}
-                  className="group relative overflow-hidden rounded-lg border border-charcoal bg-black hover:border-purple transition-all duration-300 hover:scale-105 cursor-pointer"
-                  onClick={() => openModal(design)}
+                  className="group relative overflow-hidden rounded-lg border border-charcoal bg-black transition-all duration-300"
                   onContextMenu={handleContextMenu}
                   onDragStart={handleDragStart}
                   style={{
@@ -430,33 +420,18 @@ export default function Designs() {
                       />
                     </div>
 
-                    {/* Transparent Overlay - Captures pointer events */}
+                    {/* Transparent Overlay - Prevents interaction */}
                     <div
                       className="absolute inset-0 bg-transparent z-10"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        openModal(design)
-                      }}
                       onContextMenu={handleContextMenu}
                       onDragStart={handleDragStart}
-                      onTouchStart={(e) => {
-                        handleTouchStart(e)
-                        e.stopPropagation()
-                      }}
+                      onTouchStart={handleTouchStart}
                       style={{
-                        cursor: 'pointer',
                         userSelect: 'none',
                         WebkitUserSelect: 'none',
                         WebkitTouchCallout: 'none',
                       }}
                     />
-
-                    {/* Hover Overlay */}
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none z-20">
-                      <span className="text-white font-medium text-sm md:text-base">
-                        View Full Size
-                      </span>
-                    </div>
                   </div>
                   <div className="p-2 md:p-3 bg-black">
                     <p className="text-xs md:text-sm text-white truncate">
@@ -499,121 +474,6 @@ export default function Designs() {
           </>
         )}
       </div>
-
-      {/* Modal/Lightbox for Full Size Viewing */}
-      {selectedImage && (
-        <div
-          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
-          onClick={closeModal}
-          onContextMenu={handleContextMenu}
-          onDragStart={handleDragStart}
-          onTouchStart={handleTouchStart}
-          style={{
-            userSelect: 'none',
-            WebkitUserSelect: 'none',
-            WebkitTouchCallout: 'none',
-          }}
-        >
-          {/* Close Button */}
-          <button
-            onClick={closeModal}
-            className="absolute top-4 right-4 z-[60] text-white hover:text-purple transition-colors"
-            aria-label="Close modal"
-          >
-            <svg
-              className="h-8 w-8"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-
-          {/* Modal Content */}
-          <div
-            className="relative max-w-7xl max-h-[90vh] w-full h-full flex items-center justify-center"
-            onClick={(e) => e.stopPropagation()}
-            onContextMenu={handleContextMenu}
-            onDragStart={handleDragStart}
-            style={{
-              userSelect: 'none',
-              WebkitUserSelect: 'none',
-              WebkitTouchCallout: 'none',
-            }}
-          >
-            <div className="relative w-full h-full flex items-center justify-center">
-              {/* Full Size Image */}
-              <img
-                src={selectedImage.publicUrl}
-                alt={selectedImage.name}
-                className="max-w-full max-h-full object-contain"
-                draggable="false"
-                onDragStart={handleDragStart}
-                onContextMenu={handleContextMenu}
-                style={{
-                  pointerEvents: 'none',
-                  userSelect: 'none',
-                  WebkitUserSelect: 'none',
-                  WebkitUserDrag: 'none',
-                }}
-              />
-
-              {/* TD Studios Logo Watermark - Center (Modal) */}
-              <div
-                className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                style={{
-                  userSelect: 'none',
-                  WebkitUserSelect: 'none',
-                }}
-              >
-                <Image
-                  src="/images/td-studios-xmas-logo.png"
-                  alt="TD Studios"
-                  width={600}
-                  height={600}
-                  className="w-[40%] h-auto"
-                  style={{
-                    maxWidth: '500px',
-                    opacity: 0.85,
-                    pointerEvents: 'none',
-                    userSelect: 'none',
-                    WebkitUserSelect: 'none',
-                    WebkitUserDrag: 'none',
-                  }}
-                  draggable="false"
-                  priority={false}
-                />
-              </div>
-
-              {/* Transparent Overlay on Modal Image */}
-              <div
-                className="absolute inset-0 bg-transparent z-10"
-                onContextMenu={handleContextMenu}
-                onDragStart={handleDragStart}
-                onTouchStart={handleTouchStart}
-                style={{
-                  userSelect: 'none',
-                  WebkitUserSelect: 'none',
-                  WebkitTouchCallout: 'none',
-                }}
-              />
-            </div>
-
-            {/* Image Name */}
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/80 px-6 py-3 rounded-lg">
-              <p className="text-white text-sm font-medium">
-                {selectedImage.name}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
 
       <Footer />
     </div>
