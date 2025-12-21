@@ -62,7 +62,7 @@ export default function Designs() {
   const [hasMore, setHasMore] = useState(false)
   const [activeCategory, setActiveCategory] = useState('ALL')
 
-  const LIMIT = 200
+  const LIMIT = 500
 
   // Deterrence: Prevent common save vectors
   const handleContextMenu = (e) => {
@@ -105,7 +105,7 @@ export default function Designs() {
         .list('catalog', {
           limit: LIMIT,
           offset: OFFSET,
-          sortBy: { column: 'name', order: 'asc' },
+          sortBy: { column: 'created_at', order: 'desc' },
         })
 
       if (process.env.NODE_ENV === 'development') {
