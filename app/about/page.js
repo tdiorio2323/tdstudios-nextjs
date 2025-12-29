@@ -1,7 +1,5 @@
-import Navigation from '@/components/Navigation'
-import Footer from '@/components/Footer'
+import PageLayout from '@/components/PageLayout'
 import CTA from '@/components/CTA'
-import Link from 'next/link'
 import Image from 'next/image'
 import { aboutVisual } from '@/lib/visuals'
 
@@ -12,9 +10,7 @@ export const metadata = {
 
 export default function About() {
   return (
-    <>
-      <Navigation />
-
+    <PageLayout>
       {/* About Hero */}
       <section className="about-hero">
         <div className="about-hero-content">
@@ -74,7 +70,7 @@ export default function About() {
             <div className="section-label">Our Process</div>
             <h2 className="section-title">How we bring your vision to life</h2>
             <p className="approach-text">Every project follows a proven process designed to deliver exceptional results efficiently and collaboratively. No surprises, no wasted time.</p>
-            
+
             <div className="approach-features">
               <div className="feature">
                 <div className="feature-number">01</div>
@@ -114,15 +110,12 @@ export default function About() {
         </div>
       </section>
 
-      {/* CTA Section */}
       <CTA
         title="Ready to get started?"
         subtitle="Let's talk about your project and see how we can help."
         primaryButtonText="Start a Project"
         secondaryButtonText="View Work"
       />
-
-      <Footer />
-    </>
+    </PageLayout>
   )
 }

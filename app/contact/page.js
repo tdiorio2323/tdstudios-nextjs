@@ -1,5 +1,4 @@
-import Navigation from '@/components/Navigation'
-import Footer from '@/components/Footer'
+import PageLayout from '@/components/PageLayout'
 import ContactClient from './ContactClient'
 
 export const metadata = {
@@ -21,10 +20,8 @@ export const metadata = {
 
 export default function Contact() {
   return (
-    <main className="bg-black min-h-screen">
-      <Navigation />
+    <PageLayout className="bg-black min-h-screen">
       <ContactClient />
-      <Footer />
-    </main>
+    </PageLayout>
   )
 }

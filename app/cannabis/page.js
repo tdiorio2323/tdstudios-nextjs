@@ -1,5 +1,4 @@
-import Navigation from '@/components/Navigation'
-import Footer from '@/components/Footer'
+import PageLayout from '@/components/PageLayout'
 import CTA from '@/components/CTA'
 import Image from 'next/image'
 import { cannabisShots } from '@/lib/visuals'
@@ -11,9 +10,7 @@ export const metadata = {
 
 export default function Cannabis() {
   return (
-    <>
-      <Navigation />
-
+    <PageLayout>
       {/* Cannabis Hero */}
       <section className="about-hero">
         <div className="about-hero-content">
@@ -120,15 +117,12 @@ export default function Cannabis() {
         </div>
       </section>
 
-      {/* CTA Section */}
       <CTA
         title="Ready to build your cannabis brand?"
         subtitle="Let's discuss your vision and how we can help you stand out in the market."
         primaryButtonText="Start a Project"
         secondaryButtonText="View Our Work"
       />
-
-      <Footer />
-    </>
+    </PageLayout>
   )
 }

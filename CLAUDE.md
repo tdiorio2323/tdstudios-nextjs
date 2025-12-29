@@ -44,6 +44,7 @@ npm run lint
 - `app/work/page.js` - Portfolio/work page
 - `app/work/[slug]/page.js` - Dynamic case study pages (8 projects: apex-ventures, emerald-valley, modernist-studio, high-tide-collective, northwind-tech, terra-bloom, cascade-financial, green-state-labs)
 - `app/designs/page.js` - **Design Catalog** - Browse designs from Supabase storage with category filtering, watermarks, and anti-save protections
+- `app/gsopackaging/page.js` - **GSO Packaging Catalog** - Branded catalog page with GSO Packaging overlay watermarks (similar to designs but with different branding)
 - `app/about/page.js` - About page
 - `app/contact/page.js` - Contact page with form
 - `app/inquire/page.js` - Inquiry page (uses ContactClient component)
@@ -69,6 +70,8 @@ npm run lint
 **Layout & Navigation:**
 - `components/Navigation.js` - Client component with custom cursor, mobile menu, grain overlay, and navigation links
 - `components/Footer.js` - Footer with social links and copyright
+- `components/PageLayout.js` - Standard page wrapper with Navigation and Footer (reduces boilerplate)
+- `components/PageHeader.js` - Reusable hero/header section with label, title, description
 
 **Page Sections:**
 - `components/Hero.js` - Hero section component
@@ -77,15 +80,31 @@ npm run lint
 - `components/Work.js` - Work/portfolio grid component
 - `components/HomeSections.js` - Exports Marquee, Approach, and CTA sections
 - `components/CTA.js` - Reusable call-to-action section with customizable title, subtitle, and buttons
+- `components/FilterButton.js` - Reusable filter button with active state styling
+
+**Catalog Components** (`components/catalog/`):
+- `CatalogGrid.js` - Main catalog page component (used by /designs and /gsopackaging)
+- `CategoryFilter.js` - Horizontal scrollable category tabs
+- `DesignCard.js` - Individual design card with watermark protection
+- `ErrorState.js` - Error display with retry button
+- `EmptyState.js` - Empty state display
+- `LoadingSpinner.js` - Animated loading spinner
+- `Pagination.js` - Pagination controls
+- `index.js` - Barrel export for all catalog components
 
 **Utilities:**
 - `components/Loading.js` - Loading spinner component
 - `components/ScrollReveal.js` - Scroll-based reveal animations (client component)
 - `components/StructuredData.js` - JSON-LD structured data for SEO (Organization, LocalBusiness, Website schemas)
 
+### Hooks
+
+- `hooks/useAntiSaveProtection.js` - Custom hook for anti-save protection (context menu, drag, keyboard shortcuts)
+
 ### Data & Configuration
 
 - `lib/visuals.js` - **Central configuration for all visual assets** (hero images, portfolio projects, service icons, gallery images, cannabis imagery). This is the single source of truth for image paths across the site.
+- `lib/catalogConfig.js` - **Catalog page configuration** (categories, matchers, page configs for /designs and /gsopackaging).
 - `lib/caseStudies.js` - **Single source of truth for all case study/project data**. Contains complete data for 8 case studies with fields: slug, title, category, type, year, description, image, client, services, duration, overview, challenge, solution, results, testimonial.
 - `lib/supabase.js` - Supabase client configuration with helper functions: `getDesigns()`, `getDesignUrl(path)`. Used for fetching images from Supabase storage bucket 'designs'.
 
@@ -184,7 +203,9 @@ When adding new pages, use Next.js metadata exports for SEO.
 Case study data is centralized in `lib/caseStudies.js`. The module exports:
 - `caseStudies` - Array of all case study objects
 - `caseStudySlugs` - Array of valid slugs
+- `caseStudiesBySlug` - Lookup map for O(1) slug access
 - `getCaseStudyBySlug(slug)` - Helper function to retrieve case study by slug
+- `getCaseStudiesByType(type)` - Filter case studies by type ('design' or 'cannabis')
 
 **Data structure:**
 ```javascript
@@ -295,12 +316,18 @@ The `/designs` route displays a filterable catalog of design assets stored in Su
 - Horizontal scrollable category tabs (swipeable on mobile)
 - Modal/lightbox for full-size viewing
 - Watermark: "TD STUDIOS NY" (center text + diagonal repeating pattern)
-- Pagination support (200 items per page)
+- Pagination support (200-500 items per page depending on catalog)
 
 **Watermark Styling:**
 - Grid cards: Large serif text watermark + subtle diagonal repeating text
 - Modal view: Larger watermark with enhanced opacity
 - Purple-tinted diagonal lines for brand consistency
+
+**GSO Packaging Catalog (`/gsopackaging`):**
+- Uses same Supabase storage and categories as `/designs`
+- Watermark overlay: `/public/images/gso-packaging-overlay.png` (65% width, 0.85 opacity)
+- Diamond checker pattern with purple tint as secondary watermark layer
+- No modal/lightbox (grid-only view)
 
 ## Important Notes
 

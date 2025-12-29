@@ -1,5 +1,4 @@
-import Navigation from '@/components/Navigation'
-import Footer from '@/components/Footer'
+import PageLayout from '@/components/PageLayout'
 import CTA from '@/components/CTA'
 
 export const metadata = {
@@ -9,9 +8,7 @@ export const metadata = {
 
 export default function Websites() {
   return (
-    <>
-      <Navigation />
-
+    <PageLayout>
       {/* Websites Hero */}
       <section className="about-hero">
         <div className="about-hero-content">
@@ -99,15 +96,12 @@ export default function Websites() {
         </div>
       </section>
 
-      {/* CTA Section */}
       <CTA
         title="Ready for a website that converts?"
         subtitle="Let's discuss your project and how we can help you achieve your goals."
         primaryButtonText="Start a Project"
         secondaryButtonText="View Our Work"
       />
-
-      <Footer />
-    </>
+    </PageLayout>
   )
 }
