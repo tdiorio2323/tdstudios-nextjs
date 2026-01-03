@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { supabase } from '@/lib/supabase'
+import { listAllCatalogObjects, listDesignsCatalog, detectBucketConfig, STORAGE_CONFIG } from '@/lib/storage'
 import { useAntiSaveProtection } from '@/hooks/useAntiSaveProtection'
 import { categorizeDesign } from '@/lib/catalogConfig'
 import Navigation from '@/components/Navigation'
@@ -13,11 +13,12 @@ import CategoryFilter from './CategoryFilter'
 import DesignCard from './DesignCard'
 import Pagination from './Pagination'
 
-const LIMIT = 500
+const ITEMS_PER_PAGE = 100
 
 /**
  * Main catalog grid component
  * Displays a filterable grid of designs from Supabase storage
+ * Now with recursive listing and full pagination support
  *
  * @param {Object} config - Catalog configuration
  * @param {string} config.title - Page title
@@ -26,100 +27,75 @@ const LIMIT = 500
  * @param {string} config.watermarkAlt - Alt text for watermark
  */
 export default function CatalogGrid({ config }) {
-  const [designs, setDesigns] = useState([])
+  const [allDesigns, setAllDesigns] = useState([])
   const [filteredDesigns, setFilteredDesigns] = useState([])
+  const [displayedDesigns, setDisplayedDesigns] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [page, setPage] = useState(0)
-  const [hasMore, setHasMore] = useState(false)
   const [activeCategory, setActiveCategory] = useState('ALL')
+  const [fetchStats, setFetchStats] = useState(null)
+  const [showDebug, setShowDebug] = useState(false)
+  const [lastUpdated, setLastUpdated] = useState(null)
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   const { handlers, styles } = useAntiSaveProtection()
 
-  const fetchDesigns = useCallback(async () => {
-    const OFFSET = page * LIMIT
+  const fetchDesigns = useCallback(async (isManualRefresh = false) => {
     try {
-      setLoading(true)
+      if (isManualRefresh) {
+        setIsRefreshing(true)
+      } else {
+        setLoading(true)
+      }
       setError(null)
 
-      // Validate environment variables before making API calls
+      // Validate environment variables
       if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
         throw new Error(
           'Supabase environment variables are missing. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel and redeploy.'
         )
       }
 
-      // List files from the catalog folder
-      const { data: files, error: listError } = await supabase.storage
-        .from('designs')
-        .list('catalog', {
-          limit: LIMIT,
-          offset: OFFSET,
-          sortBy: { column: 'created_at', order: 'desc' },
-        })
+      // Try the configured bucket first, then fallback
+      let result = await listAllCatalogObjects()
 
-      if (process.env.NODE_ENV === 'development') {
-        console.log('Supabase storage response:', { files, listError })
+      // If no objects found in primary config, try alternative
+      if (result.objects.length === 0 && !result.error) {
+        console.log('[CatalogGrid] No objects in primary bucket, trying alternative...')
+        result = await listDesignsCatalog()
       }
 
-      if (listError) {
-        console.error('List error:', listError)
-        throw listError
+      if (result.error) {
+        throw result.error
       }
 
-      if (!files) {
-        if (process.env.NODE_ENV === 'development') {
-          console.log('No files returned')
-        }
-        setDesigns([])
-        setFilteredDesigns([])
-        setHasMore(false)
-        return
-      }
+      console.log(`[CatalogGrid] Loaded ${result.objects.length} objects`)
+      setFetchStats(result.stats)
+      setLastUpdated(new Date())
 
-      if (process.env.NODE_ENV === 'development') {
-        console.log('Total files found:', files.length)
-      }
+      // Categorize each design
+      const categorizedDesigns = result.objects.map((obj) => ({
+        ...obj,
+        category: categorizeDesign(obj.name),
+      }))
 
-      // Filter out folders and placeholder files
-      const imageFiles = files.filter(
-        (file) =>
-          file.name &&
-          !file.name.startsWith('.') &&
-          /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(file.name)
-      )
-
-      if (process.env.NODE_ENV === 'development') {
-        console.log('Image files after filtering:', imageFiles.length)
-      }
-
-      // Generate public URLs and categorize each file
-      const designsWithUrls = imageFiles.map((file) => {
-        const { data } = supabase.storage
-          .from('designs')
-          .getPublicUrl(`catalog/${file.name}`)
-
-        return {
-          name: file.name,
-          publicUrl: data.publicUrl,
-          category: categorizeDesign(file.name),
-        }
-      })
-
-      setDesigns(designsWithUrls)
-      setFilteredDesigns(designsWithUrls)
-      setHasMore(files.length === LIMIT)
+      setAllDesigns(categorizedDesigns)
+      setFilteredDesigns(categorizedDesigns)
+      setPage(0)
     } catch (err) {
-      console.error('Error fetching designs:', err)
+      console.error('[CatalogGrid] Error fetching designs:', err)
       const errorMessage = err instanceof Error
         ? err.message
         : 'Failed to load designs. Please try again later.'
       setError(errorMessage)
     } finally {
       setLoading(false)
+      setIsRefreshing(false)
     }
-  }, [page])
+  }, [])
 
+  // Initial fetch
   useEffect(() => {
     fetchDesigns()
   }, [fetchDesigns])
@@ -127,16 +103,28 @@ export default function CatalogGrid({ config }) {
   // Filter designs when category changes
   useEffect(() => {
     if (activeCategory === 'ALL') {
-      setFilteredDesigns(designs)
+      setFilteredDesigns(allDesigns)
     } else {
       setFilteredDesigns(
-        designs.filter((design) => design.category === activeCategory)
+        allDesigns.filter((design) => design.category === activeCategory)
       )
     }
-  }, [activeCategory, designs])
+    setPage(0)
+  }, [activeCategory, allDesigns])
+
+  // Update displayed designs when page or filtered list changes
+  useEffect(() => {
+    const start = page * ITEMS_PER_PAGE
+    const end = start + ITEMS_PER_PAGE
+    setDisplayedDesigns(filteredDesigns.slice(start, end))
+  }, [page, filteredDesigns])
+
+  const totalPages = Math.ceil(filteredDesigns.length / ITEMS_PER_PAGE)
+  const hasMore = page < totalPages - 1
+  const hasPrev = page > 0
 
   const handlePrevPage = () => {
-    if (page > 0) {
+    if (hasPrev) {
       setPage(page - 1)
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
@@ -153,6 +141,10 @@ export default function CatalogGrid({ config }) {
     setActiveCategory(category)
   }
 
+  const handleRefresh = () => {
+    fetchDesigns(true)
+  }
+
   return (
     <div className="min-h-screen bg-black">
       <Navigation />
@@ -166,7 +158,7 @@ export default function CatalogGrid({ config }) {
         style={styles.base}
       >
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl mb-4 text-purple">
             {config.title}
           </h1>
@@ -175,31 +167,116 @@ export default function CatalogGrid({ config }) {
           </p>
         </div>
 
+        {/* Stats Bar */}
+        {!loading && !error && allDesigns.length > 0 && (
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-8 px-4 py-3 bg-charcoal/50 rounded-lg">
+            <div className="flex items-center gap-4 text-sm text-light-gray">
+              <span>
+                <strong className="text-white">{filteredDesigns.length}</strong>
+                {activeCategory !== 'ALL' && ` of ${allDesigns.length}`} designs
+              </span>
+              {lastUpdated && (
+                <span className="hidden sm:inline">
+                  Updated: {lastUpdated.toLocaleTimeString()}
+                </span>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleRefresh}
+                disabled={isRefreshing}
+                className="px-3 py-1.5 text-sm bg-purple/20 hover:bg-purple/30 text-purple rounded transition-colors disabled:opacity-50"
+              >
+                {isRefreshing ? 'Refreshing...' : 'Refresh'}
+              </button>
+              <button
+                onClick={() => setShowDebug(!showDebug)}
+                className="px-3 py-1.5 text-sm bg-gray/20 hover:bg-gray/30 text-light-gray rounded transition-colors"
+              >
+                {showDebug ? 'Hide Debug' : 'Debug'}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Debug Panel */}
+        {showDebug && fetchStats && (
+          <div className="mb-8 p-4 bg-charcoal rounded-lg text-xs font-mono overflow-x-auto">
+            <h3 className="text-purple font-bold mb-2">Storage Diagnostics</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-light-gray">
+              <div>
+                <p><strong>Bucket:</strong> {fetchStats.bucket || STORAGE_CONFIG.bucket}</p>
+                <p><strong>Root Path:</strong> {fetchStats.rootPath || '(root)'}</p>
+                <p><strong>Total Objects:</strong> {fetchStats.totalObjectsFound}</p>
+                <p><strong>API Calls:</strong> {fetchStats.totalApiCalls}</p>
+                <p><strong>Duration:</strong> {fetchStats.durationMs}ms</p>
+                <p><strong>Fetched At:</strong> {fetchStats.fetchedAt}</p>
+              </div>
+              <div>
+                <p><strong>Folders Scanned:</strong></p>
+                <ul className="ml-4 text-gray">
+                  {fetchStats.foldersScanned?.slice(0, 10).map((f, i) => (
+                    <li key={i}>{f}</li>
+                  ))}
+                  {fetchStats.foldersScanned?.length > 10 && (
+                    <li>...and {fetchStats.foldersScanned.length - 10} more</li>
+                  )}
+                </ul>
+              </div>
+            </div>
+            {fetchStats.errors?.length > 0 && (
+              <div className="mt-4 p-2 bg-red-900/30 rounded text-red-400">
+                <strong>Errors:</strong>
+                <ul className="ml-4">
+                  {fetchStats.errors.map((e, i) => (
+                    <li key={i}>{JSON.stringify(e)}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <div className="mt-4">
+              <p><strong>First 20 Paths:</strong></p>
+              <ul className="ml-4 text-gray max-h-40 overflow-y-auto">
+                {allDesigns.slice(0, 20).map((d, i) => (
+                  <li key={i}>{d.fullPath || d.name}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+
         {/* Loading State */}
         {loading && <LoadingSpinner />}
 
         {/* Error State */}
         {error && !loading && (
-          <ErrorState error={error} onRetry={fetchDesigns} />
+          <ErrorState error={error} onRetry={() => fetchDesigns(false)} />
         )}
 
         {/* Empty State */}
-        {!loading && !error && designs.length === 0 && <EmptyState />}
+        {!loading && !error && allDesigns.length === 0 && <EmptyState />}
 
         {/* Category Tabs and Grid */}
-        {!loading && !error && designs.length > 0 && (
+        {!loading && !error && allDesigns.length > 0 && (
           <>
             <CategoryFilter
-              designs={designs}
+              designs={allDesigns}
               activeCategory={activeCategory}
               onCategoryChange={handleCategoryChange}
             />
 
+            {/* Pagination Info */}
+            {totalPages > 1 && (
+              <div className="text-center text-sm text-light-gray mb-4">
+                Page {page + 1} of {totalPages} ({displayedDesigns.length} shown)
+              </div>
+            )}
+
             {/* Design Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 mb-12">
-              {filteredDesigns.map((design) => (
+              {displayedDesigns.map((design) => (
                 <DesignCard
-                  key={design.name}
+                  key={design.fullPath || design.name}
                   design={design}
                   watermarkImage={config.watermarkImage}
                   watermarkAlt={config.watermarkAlt}
