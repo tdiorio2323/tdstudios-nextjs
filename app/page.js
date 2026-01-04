@@ -48,7 +48,7 @@ export default function Home() {
   const handleEnter = () => {
     setIsEntering(true)
     setTimeout(() => {
-      router.push('/work')
+      router.push('/services')
     }, 1500)
   }
 

@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 const navLinks = [
-  { name: 'Work', href: '/work' },
   { name: 'Services', href: '/services' },
   { name: 'Process', href: '/process' },
   { name: 'About', href: '/about' },
@@ -13,7 +12,6 @@ const navLinks = [
 
 const mobileNavLinks = [
   { name: 'Home', href: '/' },
-  { name: 'Work', href: '/work' },
   { name: 'Services', href: '/services' },
   { name: 'Process', href: '/process' },
   { name: 'About', href: '/about' },
