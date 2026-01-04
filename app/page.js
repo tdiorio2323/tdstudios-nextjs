@@ -176,24 +176,30 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════ */}
       <section className="relative min-h-screen py-32 px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-4">
             <DomainCard
               number="01"
               title="Web"
-              description="Sites that load fast, rank high, and make money while you sleep."
+              description="Sites that load fast, rank high, and convert."
               color="purple"
             />
             <DomainCard
               number="02"
-              title="Brand"
-              description="Identities that stick in minds and stand the test of trends."
+              title="E-Commerce"
+              description="Stores that turn browsers into buyers."
               color="pink"
             />
             <DomainCard
               number="03"
-              title="Cannabis"
-              description="Compliant packaging that dominates shelves and demands premium."
+              title="Brand"
+              description="Identities that stick and stand the test of time."
               color="purple"
+            />
+            <DomainCard
+              number="04"
+              title="Cannabis"
+              description="Compliant packaging that dominates shelves."
+              color="pink"
             />
           </div>
         </div>
@@ -289,7 +295,7 @@ export default function Home() {
 
         {/* Year */}
         <div className="absolute bottom-8 right-8 text-xs tracking-[0.2em] uppercase text-gray/50">
-          © 2024
+          © 2025
         </div>
       </section>
 
