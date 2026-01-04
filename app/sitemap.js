@@ -12,7 +12,6 @@ export default function sitemap() {
     '/blog',
     '/faq',
     '/contact',
-    '/cannabis',
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date().toISOString(),
