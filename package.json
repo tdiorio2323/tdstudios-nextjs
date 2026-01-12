@@ -1,12 +1,14 @@
 {
   "name": "tdstudios-nextjs",
   "version": "1.0.0",
+  "type": "module",
   "description": "TD Studios - Web Design & Branding Agency",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "storage:audit": "node scripts/supabase_storage_audit.js"
   },
   "keywords": [],
   "author": "",
