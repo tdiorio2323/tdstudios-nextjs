@@ -1,0 +1,64 @@
+import { createClient } from '@supabase/supabase-js'
+
+export const dynamic = 'force-dynamic'
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+)
+
+const IMAGE_EXTENSIONS = /\.(jpg|jpeg|png|gif|webp|svg|avif)$/i
+
+export async function GET() {
+  try {
+    const allObjects = []
+    let offset = 0
+    let hasMore = true
+
+    while (hasMore) {
+      const { data, error } = await supabase.storage
+        .from('designs')
+        .list('VDAY', {
+          limit: 1000,
+          offset,
+          sortBy: { column: 'created_at', order: 'desc' },
+        })
+
+      if (error) {
+        return Response.json({ error: error.message }, { status: 500 })
+      }
+
+      if (!data || data.length === 0) {
+        hasMore = false
+        break
+      }
+
+      for (const item of data) {
+        if (item.name.startsWith('.')) continue
+        if (item.id === null) continue
+
+        if (IMAGE_EXTENSIONS.test(item.name)) {
+          const { data: urlData } = supabase.storage
+            .from('designs')
+            .getPublicUrl(`VDAY/${item.name}`)
+
+          allObjects.push({
+            name: item.name,
+            fullPath: `VDAY/${item.name}`,
+            publicUrl: urlData.publicUrl,
+          })
+        }
+      }
+
+      if (data.length < 1000) {
+        hasMore = false
+      } else {
+        offset += 1000
+      }
+    }
+
+    return Response.json({ objects: allObjects })
+  } catch (err) {
+    return Response.json({ error: err.message }, { status: 500 })
+  }
+}

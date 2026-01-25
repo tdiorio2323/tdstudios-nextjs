@@ -13,35 +13,36 @@ npm run dev      # Start dev server (http://localhost:3000)
 npm run build    # Production build
 npm start        # Start production server
 npm run lint     # Run linter
+npm run storage:audit  # Audit Supabase storage bucket contents
 ```
 
 ## Architecture
 
 ### App Router Pages
 
-**Main Pages:** `app/page.js` (home), `app/about/`, `app/contact/`, `app/services/`, `app/cannabis/`, `app/websites/`, `app/tdbranding/`
+**Main Pages:** `app/page.js` (home), `app/about/`, `app/contact/`, `app/services/`, `app/cannabis/`
 
-**Content Pages:** `app/blog/`, `app/faq/`, `app/process/`, `app/gallery/`
+**Content Pages:** `app/blog/`, `app/blog/[slug]/`, `app/faq/`, `app/process/`
 
 **Catalog Pages:**
 - `app/designs/` - Design catalog from Supabase with category filtering and anti-save protections
-- `app/gsopackaging/` - Same as designs but with GSO Packaging branding/watermarks
+- `app/gsopackaging/` - Same catalog system but with GSO Packaging branding/watermarks
 
-**API:** `app/api/gallery/route.js` - GET endpoint for gallery images from `/public/gallery`
+**API:** `app/api/storage-debug/route.js` - Diagnostic endpoint for Supabase storage configuration
 
 ### Key Data Files
 
-- `lib/visuals.js` - **Central source of truth** for all visual asset paths (hero images, portfolio, service icons)
-- `lib/catalogConfig.js` - Catalog categories, matchers, and page configs for `/designs` and `/gsopackaging`
+- `lib/visuals.js` - Central source of truth for all visual asset paths (hero images, portfolio, service icons)
+- `lib/catalogConfig.js` - Catalog categories, filename-based matchers, and page configs for `/designs` and `/gsopackaging`
 - `lib/blog.js` - Blog post data with `getBlogPostBySlug()`, `getBlogPostsByCategory()`, `blogSlugs`
-- `lib/supabase.js` - Supabase client with `getDesigns()`, `getDesignUrl(path)`
-- `lib/storage.js` - Comprehensive Supabase storage utilities with recursive listing and pagination
+- `lib/supabase.js` - Supabase client initialization with environment variable validation
+- `lib/storage.js` - Storage utilities with recursive listing, pagination, and `detectBucketConfig()` for auto-detecting working bucket configuration
 
 ### Component Patterns
 
-**Reusable Layout:** `PageLayout.js` wraps pages with Navigation + Footer. `PageHeader.js` provides consistent hero sections with label → title → description pattern.
+**Reusable Layout:** `PageLayout.js` wraps pages with Navigation + Footer. `PageHeader.js` provides consistent hero sections with label, title, description pattern.
 
-**Catalog System:** `components/catalog/` contains modular components (CatalogGrid, CategoryFilter, DesignCard, Pagination) used by both `/designs` and `/gsopackaging`.
+**Catalog System:** `components/catalog/` contains modular components (CatalogGrid, CategoryFilter, DesignCard, Pagination, LoadingSpinner, ErrorState, EmptyState) used by both `/designs` and `/gsopackaging`. Barrel export via `components/catalog/index.js`.
 
 **Client vs Server:** Add `'use client'` for components with state/effects (Navigation, catalog components). Server components are default.
 
@@ -62,13 +63,13 @@ npm run lint     # Run linter
 
 ## Supabase Integration
 
-**Environment Variables (required):**
-```bash
+**Environment Variables (required in `.env.local`):**
+```
 NEXT_PUBLIC_SUPABASE_URL=https://ecdastbzvypuidplpryf.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-key>
 ```
 
-**Storage:** Bucket `catalog` (or `designs/catalog`). The `lib/storage.js` has `detectBucketConfig()` to auto-detect working configuration.
+**Storage:** Bucket `designs` with root path `catalog`. The `lib/storage.js` exports `STORAGE_CONFIG` for this and `detectBucketConfig()` to auto-detect working configuration. Remote images are allowed via `next.config.mjs` `remotePatterns`.
 
 **Anti-Save Protection:** Catalog pages use `hooks/useAntiSaveProtection.js` for context menu blocking, drag prevention, and keyboard shortcut blocking. Multiple watermark layers protect images.
 
@@ -81,4 +82,10 @@ Metadata in `app/layout.js`:
 
 ## Deployment
 
-Vercel (`.vercel` directory present). Remote: `https://github.com/tdiorio2323/tdstudios-nextjs.git`
+Vercel. Remote: `https://github.com/tdiorio2323/tdstudios-nextjs.git`
+
+## Notes
+
+- ES modules: `"type": "module"` in package.json, config files use `.mjs` extension
+- No TypeScript — all source files are `.js`
+- No test framework configured
