@@ -25,15 +25,24 @@ npm run storage:audit  # Audit Supabase storage bucket contents
 **Content Pages:** `app/blog/`, `app/blog/[slug]/`, `app/faq/`, `app/process/`
 
 **Catalog Pages:**
-- `app/designs/` - Design catalog from Supabase with category filtering and anti-save protections
+- `app/designs/` - Main design catalog from Supabase with category filtering and anti-save protections
 - `app/gsopackaging/` - Same catalog system but with GSO Packaging branding/watermarks
 
-**API:** `app/api/storage-debug/route.js` - Diagnostic endpoint for Supabase storage configuration
+**Brand-Specific Catalogs:** Each brand has a page + API route fetching from a Supabase folder:
+- `/nerds` → `app/api/nerds/` → Supabase `designs/NERDS/`
+- `/flipz` → `app/api/flipz/` → Supabase `designs/FLIPZ/`
+- `/pocky` → `app/api/pocky/` → Supabase `designs/POCKY/`
+- `/faygo` → `app/api/faygo/` → Supabase `designs/FAYGO/`
+- `/vday` → `app/api/vday/` → Supabase `designs/VDAY/`
+
+**API Routes:**
+- `app/api/storage-debug/` - Diagnostic endpoint for Supabase storage configuration
+- `app/api/{brand}/` - Brand catalog endpoints (use `SUPABASE_SERVICE_ROLE_KEY`)
 
 ### Key Data Files
 
 - `lib/visuals.js` - Central source of truth for all visual asset paths (hero images, portfolio, service icons)
-- `lib/catalogConfig.js` - Catalog categories, filename-based matchers, and page configs for `/designs` and `/gsopackaging`
+- `lib/catalogConfig.js` - Catalog categories, filename-based matchers, and `catalogConfigs` for all catalog pages (designs, gsopackaging, and brand-specific)
 - `lib/blog.js` - Blog post data with `getBlogPostBySlug()`, `getBlogPostsByCategory()`, `blogSlugs`
 - `lib/supabase.js` - Supabase client initialization with environment variable validation
 - `lib/storage.js` - Storage utilities with recursive listing, pagination, and `detectBucketConfig()` for auto-detecting working bucket configuration
@@ -67,11 +76,18 @@ npm run storage:audit  # Audit Supabase storage bucket contents
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://ecdastbzvypuidplpryf.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-key>
+SUPABASE_SERVICE_ROLE_KEY=<your-service-role-key>  # Required for brand API routes
 ```
 
 **Storage:** Bucket `designs` with root path `catalog`. The `lib/storage.js` exports `STORAGE_CONFIG` for this and `detectBucketConfig()` to auto-detect working configuration. Remote images are allowed via `next.config.mjs` `remotePatterns`.
 
 **Anti-Save Protection:** Catalog pages use `hooks/useAntiSaveProtection.js` for context menu blocking, drag prevention, and keyboard shortcut blocking. Multiple watermark layers protect images.
+
+**Adding a New Brand Catalog:**
+1. Create Supabase folder: `designs/BRANDNAME/` (uppercase)
+2. Add config to `catalogConfigs` in `lib/catalogConfig.js`
+3. Create API route `app/api/brandname/route.js` (copy from existing, change folder name)
+4. Create page `app/brandname/page.js` (copy from existing, change config key and API endpoint)
 
 ## SEO
 
